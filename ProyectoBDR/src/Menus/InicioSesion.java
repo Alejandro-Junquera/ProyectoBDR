@@ -8,9 +8,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import javax.swing.JRadioButton;
 
 public class InicioSesion extends JFrame {
 
@@ -48,11 +53,13 @@ public class InicioSesion extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblUsuario = new JLabel("Usuario");
+		lblUsuario.setForeground(Color.WHITE);
 		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblUsuario.setBounds(70, 168, 109, 25);
 		contentPane.add(lblUsuario);
 		
 		JLabel lblContrasenia = new JLabel("Contraseña");
+		lblContrasenia.setForeground(Color.WHITE);
 		lblContrasenia.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblContrasenia.setBounds(70, 291, 109, 25);
 		contentPane.add(lblContrasenia);
@@ -85,5 +92,14 @@ public class InicioSesion extends JFrame {
 		});
 		btnRegistro.setBounds(335, 350, 107, 21);
 		contentPane.add(btnRegistro);
+		
+		JLabel lblFondo = new JLabel("");
+		lblFondo.setBounds(0, 0, 536, 639);
+		lblFondo.setIcon(new ImageIcon("C:\\Users\\alber\\git\\ProyectoBDR\\ProyectoBDR\\src\\Menus\\fondo.jpg"));
+		contentPane.add(lblFondo);
+		
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("New radio button");
+		rdbtnNewRadioButton.setBounds(134, 407, 103, 21);
+		contentPane.add(rdbtnNewRadioButton);
 	}
 }
