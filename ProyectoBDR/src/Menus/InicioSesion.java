@@ -42,6 +42,7 @@ public class InicioSesion extends JFrame {
 		setBounds(100, 100, 550, 650);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLocationRelativeTo(null);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
