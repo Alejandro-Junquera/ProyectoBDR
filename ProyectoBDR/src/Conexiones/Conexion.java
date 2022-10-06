@@ -1,3 +1,4 @@
+package Conexiones;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,7 +9,7 @@ public class Conexion {
     public String driver = "com.mysql.jdbc.Driver";
 
     // Nombre de la base de datos
-    public String database = "databasemovies";
+    public String database = "Escuela";
 
     // Host
     public String hostname = "localhost";
@@ -23,7 +24,7 @@ public class Conexion {
     public String username = "root";
 
     // Clave de usuario
-    public String password = "123456789";
+    public String password = "";
 
     public Connection conectarMySQL() {
         Connection conn = null;
