@@ -95,7 +95,7 @@ public class InicioSesion extends JFrame {
 		
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setBounds(0, 0, 536, 639);
-		lblFondo.setIcon(new ImageIcon("C:\\Users\\alber\\git\\ProyectoBDR\\ProyectoBDR\\src\\Menus\\fondo.jpg"));
+		lblFondo.setIcon(new ImageIcon("Imagenes/Iconos/fondo.jpg"));
 		contentPane.add(lblFondo);
 		
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("New radio button");
