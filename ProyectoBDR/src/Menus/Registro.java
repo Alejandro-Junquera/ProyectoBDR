@@ -33,7 +33,7 @@ public class Registro extends JFrame {
 	 */
 	public Registro() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1080, 637);
+		setBounds(100, 100, 1080, 561);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
@@ -85,21 +85,21 @@ public class Registro extends JFrame {
 		
 		JButton btnRegistrarse = new JButton("Registrarse");
 		btnRegistrarse.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnRegistrarse.setBounds(217, 531, 120, 40);
+		btnRegistrarse.setBounds(206, 456, 180, 40);
 		contentPane.add(btnRegistrarse);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnVolver.setBounds(566, 531, 120, 40);
+		btnVolver.setBounds(679, 456, 180, 40);
 		contentPane.add(btnVolver);
 		
 		JLabel lblNewLabel = new JLabel("Imagen");
-		lblNewLabel.setBounds(904, 10, 152, 190);
+		lblNewLabel.setBounds(904, 50, 152, 190);
 		contentPane.add(lblNewLabel);
 		
 		JButton btnAadirImagen = new JButton("Añadir Imagen");
 		btnAadirImagen.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnAadirImagen.setBounds(904, 222, 152, 40);
+		btnAadirImagen.setBounds(904, 258, 152, 40);
 		contentPane.add(btnAadirImagen);
 		
 		JLabel lblApellidos = new JLabel("Apellidos");

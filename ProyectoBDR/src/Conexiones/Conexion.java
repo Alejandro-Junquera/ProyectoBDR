@@ -4,12 +4,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexion {
-
+	Connection conn = null;
     // Librería de MySQL
-    public String driver = "com.mysql.jdbc.Driver";
+    public String driver = "com.mysql.cj.jdbc.Driver";
 
     // Nombre de la base de datos
-    public String database = "Escuela";
+    public String database = "escuela";
 
     // Host
     public String hostname = "localhost";
@@ -27,7 +27,7 @@ public class Conexion {
     public String password = "";
 
     public Connection conectarMySQL() {
-        Connection conn = null;
+        
 
         try {
             Class.forName(driver);
@@ -38,5 +38,11 @@ public class Conexion {
 
         return conn;
     }
+    
+	public Connection getConnection() {
+		// TODO Auto-generated method stub
+		return conn;
+	}
+
 
 }
