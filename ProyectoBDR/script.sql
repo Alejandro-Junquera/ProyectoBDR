@@ -5,7 +5,7 @@ apellidos VARCHAR(50),
 fecha_nacimiento DATE,
 telefono int(9),
 clave VARCHAR(20),
-foto varchar(100),
+img varchar(100),
 PRIMARY KEY (dni)
 );
 
@@ -15,7 +15,7 @@ nombre VARCHAR(20),
 apellidos VARCHAR(50),
 email VARCHAR(50),
 clave VARCHAR(20),
-foto varchar(100),
+img varchar(100),
 PRIMARY KEY(dni)
 );
 

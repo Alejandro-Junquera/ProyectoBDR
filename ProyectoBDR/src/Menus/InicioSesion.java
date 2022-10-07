@@ -88,6 +88,7 @@ public class InicioSesion extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(ComprobarUsuario.comprobarAdmin(textUsuario.getText(),textContrasenia.getText())){
 					//Instancia de la clase administrador
+					AdminSeleccion a=new AdminSeleccion(conn);
 				}else if(ComprobarUsuario.comprobarAlumno(textUsuario.getText(),textContrasenia.getText(), conn)) {
 					//Instancia de alumno
 				}else if(ComprobarUsuario.comprobarProfesor(textUsuario.getText(),textContrasenia.getText(), conn)) {
