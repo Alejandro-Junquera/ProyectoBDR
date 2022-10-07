@@ -14,6 +14,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import Funciones.Profesor;
 import Funciones.OperacionesBD;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AdminProfesor extends JFrame {
 
@@ -82,6 +84,12 @@ public class AdminProfesor extends JFrame {
 		contentPane.add(btnMostrar);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				new InicioSesion();
+			}
+		});
 		btnVolver.setBounds(736, 547, 121, 40);
 		contentPane.add(btnVolver);
 		setVisible(true);

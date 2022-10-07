@@ -30,25 +30,10 @@ public class InicioSesion extends JFrame {
 	private Conexion connbd;
 	private Connection conn;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InicioSesion frame = new InicioSesion();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	
+	public void hacerVisible() {
+		setVisible(true);
 	}
-
-	/**
-	 * Create the frame.
-	 */
 	public InicioSesion() {
 		connbd=new Conexion();
 		conn=connbd.conectarMySQL();
@@ -89,6 +74,7 @@ public class InicioSesion extends JFrame {
 				if(ComprobarUsuario.comprobarAdmin(textUsuario.getText(),textContrasenia.getText())){
 					//Instancia de la clase administrador
 					AdminSeleccion a=new AdminSeleccion(conn);
+					setVisible(false);
 				}else if(ComprobarUsuario.comprobarAlumno(textUsuario.getText(),textContrasenia.getText(), conn)) {
 					//Instancia de alumno
 				}else if(ComprobarUsuario.comprobarProfesor(textUsuario.getText(),textContrasenia.getText(), conn)) {
@@ -103,6 +89,11 @@ public class InicioSesion extends JFrame {
 		contentPane.add(btnIniSesion);
 		
 		JButton btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSalir.setBounds(322, 501, 120, 40);
 		contentPane.add(btnSalir);
@@ -120,5 +111,6 @@ public class InicioSesion extends JFrame {
 		lblFondo.setBounds(0, 0, 536, 613);
 		lblFondo.setIcon(new ImageIcon("Imagenes/Iconos/fondo.jpg"));
 		contentPane.add(lblFondo);
+		setVisible(true);
 	}
 }

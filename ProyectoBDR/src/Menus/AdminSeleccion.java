@@ -39,7 +39,13 @@ public class AdminSeleccion extends JFrame {
 		btnProfesor.setBounds(143, 253, 250, 180);
 		contentPane.add(btnProfesor);
 		
-		JButton btnNewButton_1 = new JButton("Salir");
+		JButton btnNewButton_1 = new JButton("Volver");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new InicioSesion();
+			}
+		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnNewButton_1.setBounds(143, 497, 250, 63);
 		contentPane.add(btnNewButton_1);
