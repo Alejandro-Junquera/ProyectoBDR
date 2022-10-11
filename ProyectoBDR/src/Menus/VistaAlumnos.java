@@ -43,31 +43,9 @@ public class VistaAlumnos extends JFrame {
 	}
 
 	private void llenarTabla() {
-		/*
-		
-		for (Alumno alum:alumnos) {
-			model.setRowCount(0);
-			try {
-				String dni=alum.getDni();
-				String nom=alum.getNombre();
-				String apell=alum.getApellidos();
-				String fech=alum.getfNacimiento();
-				String tel=alum.getTelefono();
-				String fot=alum.getFoto();
-				String pass=alum.getClave();
-				Object[] fila = { dni, nom, apell, fech, tel, fot, pass };
-				model.addRow(fila);
-			}
-			catch(NullPointerException te) {	
-			}
-		
-		}
-		 
-		*/
 		for (Alumno alum:alumnos) {
 			this.fila = new Object[7];
 			try {
-				System.out.println(alum.getNombre());
 				fila[0]=alum.getDNI();
 				fila[1]=alum.getNombre();
 				fila[2]=alum.getApellidos();
@@ -109,7 +87,7 @@ public class VistaAlumnos extends JFrame {
 		lblTitulo.setBounds(261, 53, 178, 48);
 		panel.add(lblTitulo);
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(88, 253, 576, -117);
+		scrollPane.setBounds(48, 132, 616, 150);
 		
 		panel.add(scrollPane);
 		
@@ -124,12 +102,6 @@ public class VistaAlumnos extends JFrame {
 				return false;	
 			}
 		};
-		/*String[] columnas = new String[] { "Dni","Nombre","Apellidos","Fecha de nacimiento","Telefono","Contraseña","Imagen" };
-		model = new DefaultTableModel(columnas, 0);
-		tablaAlumnos = new JTable(model);
-		scrollPane.setViewportView(tablaAlumnos);
-		tablaAlumnos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		llenarTabla();*/
 		
 		Object[]columna={"Dni","Nombre","Apellidos","Fecha de nacimiento","Telefono","Contraseña","Imagen"};
 		model.setColumnIdentifiers(columna);
