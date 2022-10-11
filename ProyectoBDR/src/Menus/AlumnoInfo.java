@@ -41,14 +41,20 @@ public class AlumnoInfo extends JFrame {
 		setBounds(100, 100, 550, 650);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JPanel panel1 = new JPanel();
 
 		try {
-			model = new DefaultTableModel();
+			model= new DefaultTableModel() {
+				
+				private static final long serialVersionUID = 1L;
+				public boolean isCellEditable(int x,int y) {
+					return false;	
+				}
+			};
 			String[] columnas = { "DNI", "Nombre", "Apellidos", "Fecha de nacimiento", "Telefono"};
 			model.setColumnIdentifiers(columnas);
 			
@@ -101,7 +107,8 @@ public class AlumnoInfo extends JFrame {
 		txtTusDatos.setText("Tus datos");
 		txtTusDatos.setBounds(192, 38, 117, 29);
 		contentPane.add(txtTusDatos);
-		txtTusDatos.setColumns(10);
+		txtTusDatos.setColumns(10); 
+		txtTusDatos.setEditable(false);
 		setVisible(true);
 	}
 }
