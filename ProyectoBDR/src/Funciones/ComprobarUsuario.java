@@ -44,7 +44,9 @@ public class ComprobarUsuario {
 			statement.setString(1,DNI);
 			statement.setString(2,contrasenia);
 			ResultSet rs=statement.executeQuery();
+			statement.close();
 			if(rs.next()) {
+				
 				return true;
 			}else {
 				return false;

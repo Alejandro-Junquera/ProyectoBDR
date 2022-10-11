@@ -1,25 +1,20 @@
 package Menus;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Conexiones.Conexion;
 
+import Conexiones.Conexion;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
-import java.awt.Image;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import java.awt.Color;
-import javax.swing.JRadioButton;
 import Funciones.ComprobarUsuario;
 
 public class InicioSesion extends JFrame {
@@ -30,6 +25,14 @@ public class InicioSesion extends JFrame {
 	private Conexion connbd;
 	private Connection conn;
 
+	public static void main(String[] args) {
+		try {
+			InicioSesion frame = new InicioSesion();
+			frame.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			}	
+	}
 	
 	public void hacerVisible() {
 		setVisible(true);
@@ -48,18 +51,19 @@ public class InicioSesion extends JFrame {
 		
 		JLabel lblUsuario = new JLabel("DNI");
 		lblUsuario.setForeground(Color.WHITE);
+		lblUsuario.setForeground(new Color(0, 0, 0));
 		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblUsuario.setBounds(70, 168, 109, 25);
+		lblUsuario.setBounds(70, 178, 109, 25);
 		contentPane.add(lblUsuario);
 		
 		JLabel lblContrasenia = new JLabel("Contraseña");
-		lblContrasenia.setForeground(Color.WHITE);
+		lblContrasenia.setForeground(new Color(0, 0, 0));
 		lblContrasenia.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblContrasenia.setBounds(70, 291, 109, 25);
 		contentPane.add(lblContrasenia);
 		
 		textUsuario = new JTextField();
-		textUsuario.setBounds(189, 163, 253, 40);
+		textUsuario.setBounds(189, 173, 253, 40);
 		contentPane.add(textUsuario);
 		textUsuario.setColumns(10);
 		
@@ -112,6 +116,7 @@ public class InicioSesion extends JFrame {
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setBounds(0, 0, 536, 613);
 		lblFondo.setIcon(new ImageIcon("Imagenes/Iconos/fondo.jpg"));
+		lblFondo.setIcon(new ImageIcon("Imagenes/Iconos/salesianos.jpg"));
 		contentPane.add(lblFondo);
 		setVisible(true);
 	}
