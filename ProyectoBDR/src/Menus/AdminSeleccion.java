@@ -23,6 +23,12 @@ public class AdminSeleccion extends JFrame {
 		contentPane.setLayout(null);
 		
 		JButton btnNewButton = new JButton("Administrar Alumnos");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VistaAlumnos va= new VistaAlumnos();
+				va.setVisible(true);
+			}
+		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnNewButton.setBounds(143, 40, 250, 180);
 		contentPane.add(btnNewButton);

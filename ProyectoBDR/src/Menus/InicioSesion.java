@@ -1,25 +1,18 @@
 package Menus;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import Conexiones.Conexion;
-
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
-import java.awt.Image;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import java.awt.Color;
-import javax.swing.JRadioButton;
 import Funciones.ComprobarUsuario;
 
 public class InicioSesion extends JFrame {
@@ -30,25 +23,15 @@ public class InicioSesion extends JFrame {
 	private Conexion connbd;
 	private Connection conn;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InicioSesion frame = new InicioSesion();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		try {
+			InicioSesion frame = new InicioSesion();
+			frame.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			}		
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public InicioSesion() {
 		connbd=new Conexion();
 		conn=connbd.conectarMySQL();
