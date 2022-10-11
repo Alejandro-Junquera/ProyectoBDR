@@ -47,19 +47,19 @@ public class InicioSesion extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblUsuario = new JLabel("DNI");
-		lblUsuario.setForeground(Color.WHITE);
+		lblUsuario.setForeground(new Color(0, 0, 0));
 		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblUsuario.setBounds(70, 168, 109, 25);
+		lblUsuario.setBounds(70, 178, 109, 25);
 		contentPane.add(lblUsuario);
 		
 		JLabel lblContrasenia = new JLabel("Contraseña");
-		lblContrasenia.setForeground(Color.WHITE);
+		lblContrasenia.setForeground(new Color(0, 0, 0));
 		lblContrasenia.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblContrasenia.setBounds(70, 291, 109, 25);
 		contentPane.add(lblContrasenia);
 		
 		textUsuario = new JTextField();
-		textUsuario.setBounds(189, 163, 253, 40);
+		textUsuario.setBounds(189, 173, 253, 40);
 		contentPane.add(textUsuario);
 		textUsuario.setColumns(10);
 		
@@ -109,7 +109,7 @@ public class InicioSesion extends JFrame {
 		
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setBounds(0, 0, 536, 613);
-		lblFondo.setIcon(new ImageIcon("Imagenes/Iconos/fondo.jpg"));
+		lblFondo.setIcon(new ImageIcon("Imagenes/Iconos/salesianos.jpg"));
 		contentPane.add(lblFondo);
 		setVisible(true);
 	}
