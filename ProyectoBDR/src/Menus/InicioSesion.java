@@ -23,13 +23,18 @@ public class InicioSesion extends JFrame {
 	private Conexion connbd;
 	private Connection conn;
 
+
 	public static void main(String[] args) {
 		try {
 			InicioSesion frame = new InicioSesion();
 			frame.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
-			}		
+			}	
+	}
+	
+	public void hacerVisible() {
+		setVisible(true);
 	}
 
 	public InicioSesion() {
@@ -45,19 +50,19 @@ public class InicioSesion extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblUsuario = new JLabel("DNI");
-		lblUsuario.setForeground(Color.WHITE);
+		lblUsuario.setForeground(new Color(0, 0, 0));
 		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblUsuario.setBounds(70, 168, 109, 25);
+		lblUsuario.setBounds(70, 178, 109, 25);
 		contentPane.add(lblUsuario);
 		
 		JLabel lblContrasenia = new JLabel("Contraseña");
-		lblContrasenia.setForeground(Color.WHITE);
+		lblContrasenia.setForeground(new Color(0, 0, 0));
 		lblContrasenia.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblContrasenia.setBounds(70, 291, 109, 25);
 		contentPane.add(lblContrasenia);
 		
 		textUsuario = new JTextField();
-		textUsuario.setBounds(189, 163, 253, 40);
+		textUsuario.setBounds(189, 173, 253, 40);
 		contentPane.add(textUsuario);
 		textUsuario.setColumns(10);
 		
@@ -72,6 +77,7 @@ public class InicioSesion extends JFrame {
 				if(ComprobarUsuario.comprobarAdmin(textUsuario.getText(),textContrasenia.getText())){
 					//Instancia de la clase administrador
 					AdminSeleccion a=new AdminSeleccion(conn);
+					setVisible(false);
 				}else if(ComprobarUsuario.comprobarAlumno(textUsuario.getText(),textContrasenia.getText(), conn)) {
 					//Instancia de alumno
 				}else if(ComprobarUsuario.comprobarProfesor(textUsuario.getText(),textContrasenia.getText(), conn)) {
@@ -86,6 +92,11 @@ public class InicioSesion extends JFrame {
 		contentPane.add(btnIniSesion);
 		
 		JButton btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSalir.setBounds(322, 501, 120, 40);
 		contentPane.add(btnSalir);
@@ -101,7 +112,8 @@ public class InicioSesion extends JFrame {
 		
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setBounds(0, 0, 536, 613);
-		lblFondo.setIcon(new ImageIcon("Imagenes/Iconos/fondo.jpg"));
+		lblFondo.setIcon(new ImageIcon("Imagenes/Iconos/salesianos.jpg"));
 		contentPane.add(lblFondo);
+		setVisible(true);
 	}
 }

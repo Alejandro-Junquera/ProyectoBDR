@@ -23,6 +23,7 @@ public class AdminProfesor extends JFrame {
 	private JTable table;
 	private static DefaultTableModel tablemodel;
 	private static  ArrayList<Profesor> profesores=new ArrayList<>();
+	private int filaSelecionada;
 
 	public static void actualizarGrafico() {
 		tablemodel.setRowCount(0);
@@ -60,7 +61,8 @@ public class AdminProfesor extends JFrame {
 		table = new JTable(tablemodel);
 		table.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				//
+				filaSelecionada = table.rowAtPoint(evt.getPoint());
+				
 			}
 		});
 		scrollPane.setViewportView(table);
@@ -68,14 +70,35 @@ public class AdminProfesor extends JFrame {
 		actualizarGrafico();
 		
 		JButton btnNewButton = new JButton("Insertar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				InsertarProfesor i=new InsertarProfesor(conn);
+				dispose();
+			}
+		});
 		btnNewButton.setBounds(69, 547, 121, 40);
 		contentPane.add(btnNewButton);
 		
 		JButton btnActualizar = new JButton("Actualizar");
+		btnActualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ActualizarProfesor ac=new ActualizarProfesor(profesores.get(filaSelecionada).getDNI(),profesores.get(filaSelecionada).getNombre(),profesores.get(filaSelecionada).getApellidos(),profesores.get(filaSelecionada).getEmail(),profesores.get(filaSelecionada).getClave(),profesores.get(filaSelecionada).getImg(),"Asignatura",conn);
+				dispose();
+			}
+		});
 		btnActualizar.setBounds(231, 547, 121, 40);
 		contentPane.add(btnActualizar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				OperacionesBD.borrarDNIProfAsignatura(profesores.get(filaSelecionada).getDNI(), conn);
+				OperacionesBD.borrarProfesor(profesores.get(filaSelecionada).getDNI(), conn);
+				profesores=OperacionesBD.ExtraccionTablaProfesor(conn);
+				actualizarGrafico();
+				
+			}
+		});
 		btnEliminar.setBounds(400, 547, 121, 40);
 		contentPane.add(btnEliminar);
 		
@@ -84,6 +107,12 @@ public class AdminProfesor extends JFrame {
 		contentPane.add(btnMostrar);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				new InicioSesion();
+			}
+		});
 		btnVolver.setBounds(736, 547, 121, 40);
 		contentPane.add(btnVolver);
 		setVisible(true);
