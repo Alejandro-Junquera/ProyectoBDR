@@ -14,6 +14,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import Funciones.Profesor;
 import Funciones.OperacionesBD;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AdminProfesor extends JFrame {
 
