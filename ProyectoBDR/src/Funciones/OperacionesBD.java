@@ -139,7 +139,7 @@ public class OperacionesBD {
 		return alum;
     }
 	
-	public static String OperacionesBD(int dni,Connection conn){
+	public static String BorrarAlumno(int dni,Connection conn){
 		PreparedStatement ps;
 		String consulta= "delete from alumno where dni = ?";
 		try {

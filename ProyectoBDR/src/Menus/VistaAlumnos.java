@@ -156,7 +156,7 @@ public class VistaAlumnos extends JFrame {
 		btnEliminarAlumno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Conexion conn = new Conexion();
-				OperacionesBD.OperacionesBD(tablaAlumnos.getSelectedRow(), conn.conectarMySQL());
+				OperacionesBD.BorrarAlumno(tablaAlumnos.getSelectedRow(), conn.conectarMySQL());
 			}
 		});
 		btnEliminarAlumno.setBounds(397, 352, 121, 40);
