@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -19,6 +20,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import Funciones.*;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class InsertarProfesor extends JFrame {
 
@@ -28,19 +31,31 @@ public class InsertarProfesor extends JFrame {
 	private JTextField textApell;
 	private JTextField textEmail;
 	private JTextField textContr;
-	private ArrayList<String> a;
-	private String[] asignaturas;
+	private static ArrayList<Asignatura> a;
 	private String relativa;
+	private JTable tableAsig;
+	private JTable tableAsigEli;
+	private static DefaultTableModel tablemodel;
+	private DefaultTableModel tablemodel2;
 
 	
+	public static void actualizarGrafico() {
+		tablemodel.setRowCount(0);
+		try {
+			for (int i = 0; i < a.size(); i++) {
+				String asignatura=a.get(i).getNombre();
+
+				Object[] data = { asignatura };
+				tablemodel.addRow(data);
+			}
+		} catch (java.lang.NullPointerException e) {
+		}
+
+	}
 	public InsertarProfesor(Connection conn) {
 		a=OperacionesBD.ExtraccionAsignaturas(conn);
-		asignaturas=new String[a.size()];
-		for(int i=0;i<a.size();i++) {
-			asignaturas[i]=a.get(i);
-		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 700, 750);
+		setBounds(100, 100, 1027, 750);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -48,7 +63,7 @@ public class InsertarProfesor extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblImg = new JLabel("Insertar Imagen");
-		lblImg.setBounds(476, 30, 175, 210);
+		lblImg.setBounds(659, 38, 232, 210);
 		contentPane.add(lblImg);
 		
 		JButton btnImg = new JButton("Añadir Imagen");
@@ -57,7 +72,7 @@ public class InsertarProfesor extends JFrame {
 				relativa=insertarImagenes.generarRutaImg(relativa,lblImg);
 			}
 		});
-		btnImg.setBounds(476, 271, 175, 35);
+		btnImg.setBounds(659, 262, 222, 35);
 		contentPane.add(btnImg);
 		
 		JLabel lblDNI = new JLabel("DNI");
@@ -115,26 +130,15 @@ public class InsertarProfesor extends JFrame {
 		textContr.setBounds(138, 524, 253, 40);
 		contentPane.add(textContr);
 		
-		JLabel lblAsignatura = new JLabel("Asignatura");
-		lblAsignatura.setForeground(new Color(64, 0, 64));
-		lblAsignatura.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblAsignatura.setBounds(524, 372, 109, 25);
-		contentPane.add(lblAsignatura);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(asignaturas));
-		comboBox.setBounds(476, 437, 157, 21);
-		contentPane.add(comboBox);
-		
 		JButton btnAadir = new JButton("Añadir");
 		btnAadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				OperacionesBD.insertarProfesor(textDNI.getText(),textNombre.getText(),textApell.getText(),textEmail.getText(),textContr.getText(),relativa,(String)comboBox.getSelectedItem(),conn);
+				OperacionesBD.insertarProfesor(textDNI.getText(),textNombre.getText(),textApell.getText(),textEmail.getText(),textContr.getText(),relativa,"patata",conn);
 				new AdminProfesor(conn);
 				dispose();
 			}
 		});
-		btnAadir.setBounds(163, 622, 121, 40);
+		btnAadir.setBounds(258, 663, 121, 40);
 		contentPane.add(btnAadir);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -144,8 +148,27 @@ public class InsertarProfesor extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(420, 622, 121, 40);
+		btnVolver.setBounds(600, 663, 121, 40);
 		contentPane.add(btnVolver);
+		
+		JScrollPane scrollPane_AsigDisp = new JScrollPane();
+		scrollPane_AsigDisp.setBounds(424, 351, 277, 195);
+		contentPane.add(scrollPane_AsigDisp);
+		
+		String[] columnas = new String[] { "Asignaturas disponibles" };
+		tablemodel = new DefaultTableModel(columnas, 0);
+		tableAsig = new JTable(tablemodel);
+		scrollPane_AsigDisp.setViewportView(tableAsig);
+		actualizarGrafico();
+		
+		JScrollPane scrollPane_AsigElim = new JScrollPane();
+		scrollPane_AsigElim.setBounds(711, 351, 290, 195);
+		contentPane.add(scrollPane_AsigElim);
+		
+		String[] columnas2 = new String[] { "Asignaturas elegidas" };
+		tablemodel2 = new DefaultTableModel(columnas2, 0);
+		tableAsigEli = new JTable(tablemodel2);
+		scrollPane_AsigElim.setViewportView(tableAsigEli);
 		setVisible(true);
 	}
 }

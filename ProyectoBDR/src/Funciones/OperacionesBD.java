@@ -49,14 +49,14 @@ public class OperacionesBD {
 			e.printStackTrace();
 		}
 	}
-	public static ArrayList<String> ExtraccionAsignaturas(Connection conn){
-		String sql="select nombre from asignatura where dni_pro is null;";
-		ArrayList<String> asignaturas=new ArrayList<>();
+	public static ArrayList<Asignatura> ExtraccionAsignaturas(Connection conn){
+		String sql="select * from asignatura where dni_pro is null;";
+		ArrayList<Asignatura> asignaturas=new ArrayList<Asignatura>();
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			ResultSet rs=statement.executeQuery();
 			while(rs.next()) {
-				asignaturas.add(rs.getString("nombre"));
+				asignaturas.add(new Asignatura(rs.getInt("id"),rs.getString("nombre"),rs.getInt("horasSemanales"),rs.getString("dni_pro")));
 			}
 			statement.close();
 			return asignaturas;
