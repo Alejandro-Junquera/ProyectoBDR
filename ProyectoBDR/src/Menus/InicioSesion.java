@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Conexiones.Conexion;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
@@ -12,37 +15,28 @@ import java.awt.Image;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.JRadioButton;
+import Funciones.ComprobarUsuario;
 
 public class InicioSesion extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textUsuario;
 	private JTextField textContrasenia;
+	private Conexion connbd;
+	private Connection conn;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InicioSesion frame = new InicioSesion();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	
+	public void hacerVisible() {
+		setVisible(true);
 	}
-
-	/**
-	 * Create the frame.
-	 */
 	public InicioSesion() {
+		connbd=new Conexion();
+		conn=connbd.conectarMySQL();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 650);
 		contentPane = new JPanel();
@@ -52,7 +46,7 @@ public class InicioSesion extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblUsuario = new JLabel("Usuario");
+		JLabel lblUsuario = new JLabel("DNI");
 		lblUsuario.setForeground(Color.WHITE);
 		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblUsuario.setBounds(70, 168, 109, 25);
@@ -75,11 +69,33 @@ public class InicioSesion extends JFrame {
 		textContrasenia.setColumns(10);
 		
 		JButton btnIniSesion = new JButton("Iniciar Sesión");
+		btnIniSesion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(ComprobarUsuario.comprobarAdmin(textUsuario.getText(),textContrasenia.getText())){
+					//Instancia de la clase administrador
+					AdminSeleccion a=new AdminSeleccion(conn);
+					setVisible(false);
+				}else if(ComprobarUsuario.comprobarAlumno(textUsuario.getText(),textContrasenia.getText(), conn)) {
+					//Instancia de alumno
+					AlumnoInfo al = new AlumnoInfo(conn, textUsuario.getText());
+					setVisible(false);
+				}else if(ComprobarUsuario.comprobarProfesor(textUsuario.getText(),textContrasenia.getText(), conn)) {
+					//Instancia de profesor
+				}else {
+					System.out.println("Usuario o contraseña erroneo");
+				}
+			}
+		});
 		btnIniSesion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnIniSesion.setBounds(94, 501, 120, 40);
 		contentPane.add(btnIniSesion);
 		
 		JButton btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSalir.setBounds(322, 501, 120, 40);
 		contentPane.add(btnSalir);
@@ -94,12 +110,9 @@ public class InicioSesion extends JFrame {
 		contentPane.add(btnRegistro);
 		
 		JLabel lblFondo = new JLabel("");
-		lblFondo.setBounds(0, 0, 536, 639);
+		lblFondo.setBounds(0, 0, 536, 613);
 		lblFondo.setIcon(new ImageIcon("Imagenes/Iconos/fondo.jpg"));
 		contentPane.add(lblFondo);
-		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("New radio button");
-		rdbtnNewRadioButton.setBounds(134, 407, 103, 21);
-		contentPane.add(rdbtnNewRadioButton);
+		setVisible(true);
 	}
 }
