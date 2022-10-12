@@ -36,7 +36,7 @@ public class ActualizarProfesor extends JFrame {
 		//a=OperacionesBD.ExtraccionAsignaturas(conn);
 		asignaturas=new String[a.size()];
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 700, 750);
+		setBounds(100, 100, 1027, 750);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -117,11 +117,6 @@ public class ActualizarProfesor extends JFrame {
 		lblAsignatura.setBounds(524, 372, 109, 25);
 		contentPane.add(lblAsignatura);
 
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(asignaturas));
-		comboBox.setSelectedItem(asignatura);
-		comboBox.setBounds(476, 437, 157, 21);
-		contentPane.add(comboBox);
 
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(new ActionListener() {

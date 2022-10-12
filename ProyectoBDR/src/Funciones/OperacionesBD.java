@@ -27,7 +27,7 @@ public class OperacionesBD {
 		}
 		return null;
 	}
-	public static void insertarProfesor(String dni,String nombre,String apellidos,String email,String contrasenia,String img,String asignatura,Connection conn) {
+	public static void insertarProfesor(String dni,String nombre,String apellidos,String email,String contrasenia,String img,ArrayList<Asignatura> asignaturas,Connection conn) {
 		String sql="INSERT INTO profesor VALUES (?,?,?,?,?,?);";
 		String sql2="UPDATE asignatura set dni_pro=? where nombre=?";
 		
@@ -40,10 +40,13 @@ public class OperacionesBD {
 			statement.setString(4,email);
 			statement.setString(5,contrasenia);
 			statement.setString(6,img);
-			statement2.setString(1,dni);
-			statement2.setString(2,asignatura);
 			int rs=statement.executeUpdate();
-			int rs2=statement2.executeUpdate();
+			for(int i=0;i<asignaturas.size();i++) {
+				statement2.setString(1,dni);
+				statement2.setString(2,asignaturas.get(i).getNombre());
+				int rs2=statement2.executeUpdate();
+			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
