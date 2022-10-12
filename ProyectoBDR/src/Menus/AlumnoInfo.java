@@ -1,7 +1,6 @@
 package Menus;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,36 +18,45 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Funciones.Alumno;
+import Funciones.Asignatura;
 import Funciones.OperacionesBD;
+import Funciones.insertarImagenes;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 
 public class AlumnoInfo extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
-	private DefaultTableModel model = new DefaultTableModel();
+	private JTable tablaAlum;
+	private JTable tablaAsig;
+	private DefaultTableModel modeloAlum = new DefaultTableModel();
+	private DefaultTableModel modeloAsig = new DefaultTableModel();
 	private String dni;
 	private String nombre;
 	private String apellidos;
 	private String fechaNac;
 	private String tlf;
 	private JTextField txtTusDatos;
+	private String relativa;
+	private JTextField txtTusAsignaturas;
+	private Object[] fila;
+	private ArrayList<Asignatura> asignaturas=new ArrayList<Asignatura>();
 
 	public AlumnoInfo(Connection conn, String dniAlumno) {
+		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 650);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
 		JPanel panel1 = new JPanel();
 
 		try {
-			model= new DefaultTableModel() {
+			modeloAlum= new DefaultTableModel() {
 				
 				private static final long serialVersionUID = 1L;
 				public boolean isCellEditable(int x,int y) {
@@ -56,7 +64,7 @@ public class AlumnoInfo extends JFrame {
 				}
 			};
 			String[] columnas = { "DNI", "Nombre", "Apellidos", "Fecha de nacimiento", "Telefono"};
-			model.setColumnIdentifiers(columnas);
+			modeloAlum.setColumnIdentifiers(columnas);
 			
 			String sql="select dni,nombre,apellidos,fecha_nacimiento,telefono from alumno where dni=?;";
 			PreparedStatement statement=conn.prepareStatement(sql);
@@ -71,7 +79,7 @@ public class AlumnoInfo extends JFrame {
 				tlf = String.valueOf(rs.getString("telefono"));
 			}
 			Object[] datos = {dni, nombre, apellidos, fechaNac, tlf};
-			model.addRow(datos);
+			modeloAlum.addRow(datos);
 			
 		} catch (Exception ex) {
 		}
@@ -87,20 +95,25 @@ public class AlumnoInfo extends JFrame {
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnNewButton_1.setBounds(143, 497, 250, 63);
 		contentPane.add(btnNewButton_1);
-		table = new JTable();
-		table.setEnabled(true);
-		table.setModel(model);
-		JScrollPane scrollPane = new JScrollPane(table);
+		tablaAlum = new JTable();
+		tablaAlum.setEnabled(true);
+		tablaAlum.setModel(modeloAlum);
+		JScrollPane scrollPane = new JScrollPane(tablaAlum);
 		scrollPane.setBounds(36, 74, 452, 39);
 		contentPane.add(scrollPane);
 		
-		JLabel lblNewLabel = new JLabel("Inserta imagen");
-		lblNewLabel.setBounds(394, 196, 94, 110);
-		contentPane.add(lblNewLabel);
+		JLabel lblImg = new JLabel("Insertar Imagen");
+		lblImg.setBounds(371, 156, 127, 143);
+		contentPane.add(lblImg);
 		
-		JButton btnNewButton = new JButton("Insertar");
-		btnNewButton.setBounds(391, 319, 97, 25);
-		contentPane.add(btnNewButton);
+		JButton btnImg = new JButton("Añadir Imagen");
+		btnImg.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				relativa=insertarImagenes.generarRutaImg(relativa,lblImg);
+			}
+		});
+		btnImg.setBounds(371, 310, 127, 35);
+		contentPane.add(btnImg);
 		
 		txtTusDatos = new JTextField();
 		txtTusDatos.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -109,6 +122,45 @@ public class AlumnoInfo extends JFrame {
 		contentPane.add(txtTusDatos);
 		txtTusDatos.setColumns(10); 
 		txtTusDatos.setEditable(false);
-		setVisible(true);
+		
+		txtTusAsignaturas = new JTextField();
+		txtTusAsignaturas.setText("Tus asignaturas");
+		txtTusAsignaturas.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		txtTusAsignaturas.setEditable(false);
+		txtTusAsignaturas.setColumns(10);
+		txtTusAsignaturas.setBounds(92, 165, 183, 39);
+		txtTusAsignaturas.setEditable(false);
+		contentPane.add(txtTusAsignaturas);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(36, 215, 298, 143);
+		contentPane.add(scrollPane_1);
+		asignaturas=OperacionesBD.ExtraccionTodasAsignaturas(conn);
+		
+		tablaAsig = new JTable();
+		tablaAsig.setEnabled(true);
+		scrollPane_1.setViewportView(tablaAsig);
+		tablaAsig.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		try {
+		modeloAsig= new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int x,int y) {
+				return false;	
+			}
+		};
+		for (Asignatura asig:asignaturas) {
+			this.fila = new Object[1];
+			String nombre=asig.getNombre();
+			fila[0]=nombre;
+			modeloAsig.addRow(fila);
+		}
+		}catch(Exception e){
+		}
+		tablaAsig.setModel(modeloAsig);
+		panel1.add(new JScrollPane(tablaAsig));
+		contentPane.add(panel1, BorderLayout.CENTER);
+		
 	}
+
+	
 }

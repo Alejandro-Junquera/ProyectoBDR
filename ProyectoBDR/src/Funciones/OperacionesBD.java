@@ -52,8 +52,28 @@ public class OperacionesBD {
 			e.printStackTrace();
 		}
 	}
+	//Con el dni del profesor nulo para que solo aparezcan asignaturas que no tienen profesor asignado
 	public static ArrayList<Asignatura> ExtraccionAsignaturas(Connection conn){
 		String sql="select * from asignatura where dni_pro is null;";
+		ArrayList<Asignatura> asignaturas=new ArrayList<Asignatura>();
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			ResultSet rs=statement.executeQuery();
+			while(rs.next()) {
+				asignaturas.add(new Asignatura(rs.getInt("id"),rs.getString("nombre"),rs.getInt("horasSemanales"),rs.getString("dni_pro")));
+			}
+			statement.close();
+			return asignaturas;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;	
+	}
+	//Igual que el metodo anterior pero sin esa condicion
+	public static ArrayList<Asignatura> ExtraccionTodasAsignaturas(Connection conn){
+		String sql="select * from asignatura;";
 		ArrayList<Asignatura> asignaturas=new ArrayList<Asignatura>();
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
