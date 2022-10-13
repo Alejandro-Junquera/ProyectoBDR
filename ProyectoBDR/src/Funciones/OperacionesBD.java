@@ -107,6 +107,26 @@ public class OperacionesBD {
 		
 		return null;	
 	}
+	
+	public ArrayList<Asignatura> extraccionAsignaturasAlumno(Connection conn, String dni) {
+		ArrayList<Asignatura> res=new ArrayList<Asignatura>();
+		String sql="select nombre from asignatura where id=(select id_asi from matricula where dni_alu=?);";
+		
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			statement.setString(1,dni);
+			ResultSet rs=statement.executeQuery();
+			while(rs.next()) {
+				res.add(new Asignatura(rs.getInt("id"),rs.getString("nombre"),
+						rs.getInt("horasSemanales"),rs.getString("dni_pro")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
 	public static void borrarDNIProfAsignatura(String dni,Connection conn) {
 		String sql="update asignatura set dni_pro=? where dni_pro=?;";
 		try {

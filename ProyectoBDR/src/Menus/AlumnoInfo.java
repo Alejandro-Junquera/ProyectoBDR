@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -138,29 +139,19 @@ public class AlumnoInfo extends JFrame {
 		asignaturas=OperacionesBD.ExtraccionTodasAsignaturas(conn);
 		
 		tablaAsig = new JTable();
-		tablaAsig.setEnabled(true);
 		scrollPane_1.setViewportView(tablaAsig);
 		tablaAsig.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		try {
+		
 		modeloAsig= new DefaultTableModel() {
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int x,int y) {
 				return false;	
 			}
 		};
-		for (Asignatura asig:asignaturas) {
-			this.fila = new Object[1];
-			String nombre=asig.getNombre();
-			fila[0]=nombre;
-			modeloAsig.addRow(fila);
-		}
-		}catch(Exception e){
-		}
 		tablaAsig.setModel(modeloAsig);
 		panel1.add(new JScrollPane(tablaAsig));
 		contentPane.add(panel1, BorderLayout.CENTER);
 		
 	}
-
 	
 }
