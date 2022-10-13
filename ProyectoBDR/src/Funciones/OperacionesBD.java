@@ -32,7 +32,6 @@ public class OperacionesBD {
 		String sql2="UPDATE asignatura set dni_pro=? where nombre=?";
 		
 		try {
-			//Prueba
 			PreparedStatement statement=conn.prepareStatement(sql);
 			PreparedStatement statement2=conn.prepareStatement(sql2);
 			statement.setString(1,dni);
