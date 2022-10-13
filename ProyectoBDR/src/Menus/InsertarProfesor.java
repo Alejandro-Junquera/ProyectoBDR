@@ -40,6 +40,7 @@ public class InsertarProfesor extends JFrame {
 	private static DefaultTableModel tablemodel;
 	private static DefaultTableModel tablemodel2;
 	private int filaSeleccionada;
+	private JButton Aplicar,Aplicar2;
 
 	
 	public static void actualizarGrafico(ArrayList<Asignatura> actualizar,DefaultTableModel tablemodel) {
@@ -193,7 +194,7 @@ public class InsertarProfesor extends JFrame {
 		});
 		scrollPane_AsigElim.setViewportView(tableAsigEli);
 		
-		JButton Aplicar = new JButton("Aplicar");
+		Aplicar = new JButton("Aplicar");
 		Aplicar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				asignaturaAsig.add(asignaturasLibres.get(filaSeleccionada));
@@ -201,13 +202,14 @@ public class InsertarProfesor extends JFrame {
 				actualizarGrafico(asignaturasLibres,tablemodel);
 				actualizarGrafico(asignaturaAsig,tablemodel2);
 				desactivarBoton(asignaturasLibres, Aplicar);
+				desactivarBoton(asignaturaAsig, Aplicar2);
 			}
 		});
 		Aplicar.setToolTipText("");
 		Aplicar.setBounds(520, 562, 85, 21);
 		contentPane.add(Aplicar);
 		
-		JButton Aplicar2 = new JButton("Aplicar");
+		Aplicar2 = new JButton("Aplicar");
 		Aplicar2.setToolTipText("");
 		Aplicar2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -216,6 +218,7 @@ public class InsertarProfesor extends JFrame {
 				actualizarGrafico(asignaturaAsig,tablemodel2);
 				actualizarGrafico(asignaturasLibres,tablemodel);
 				desactivarBoton(asignaturaAsig, Aplicar2);
+				desactivarBoton(asignaturasLibres, Aplicar);
 			}
 		});
 		Aplicar2.setBounds(825, 562, 85, 21);
