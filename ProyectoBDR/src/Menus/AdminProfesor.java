@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -13,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import Funciones.Profesor;
+import Funciones.Asignatura;
 import Funciones.OperacionesBD;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -24,6 +26,8 @@ public class AdminProfesor extends JFrame {
 	private static DefaultTableModel tablemodel;
 	private static  ArrayList<Profesor> profesores=new ArrayList<>();
 	private int filaSelecionada;
+	private ArrayList<Asignatura> asignaturas;
+	private JButton btnInsertar;
 
 	public static void actualizarGrafico() {
 		tablemodel.setRowCount(0);
@@ -42,8 +46,16 @@ public class AdminProfesor extends JFrame {
 		}
 
 	}
+	public void hayAsignatura() {
+		if(asignaturas.isEmpty()) {
+			btnInsertar.setEnabled(false);
+		}else {
+			btnInsertar.setEnabled(true);
+		}
+	}
 	public AdminProfesor(Connection conn) {
 		profesores=OperacionesBD.ExtraccionTablaProfesor(conn);
+		asignaturas=OperacionesBD.ExtraccionAsignaturas(conn);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 950, 700);
 		contentPane = new JPanel();
@@ -70,15 +82,17 @@ public class AdminProfesor extends JFrame {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		actualizarGrafico();
 		
-		JButton btnNewButton = new JButton("Insertar");
-		btnNewButton.addActionListener(new ActionListener() {
+		btnInsertar = new JButton("Insertar");
+		btnInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				InsertarProfesor i=new InsertarProfesor(conn);
 				dispose();
 			}
 		});
-		btnNewButton.setBounds(69, 547, 121, 40);
-		contentPane.add(btnNewButton);
+		btnInsertar.setBounds(69, 547, 121, 40);
+		contentPane.add(btnInsertar);
+		hayAsignatura();
+		
 		
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(new ActionListener() {
@@ -117,5 +131,8 @@ public class AdminProfesor extends JFrame {
 		btnVolver.setBounds(736, 547, 121, 40);
 		contentPane.add(btnVolver);
 		setVisible(true);
+		if(asignaturas.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No se puede insertar profesor, no hay asignaturas libres");
+		}
 	}
 }

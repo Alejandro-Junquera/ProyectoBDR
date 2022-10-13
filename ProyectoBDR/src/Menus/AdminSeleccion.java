@@ -34,7 +34,7 @@ public class AdminSeleccion extends JFrame {
 		});
 		
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnNewButton.setBounds(143, 40, 250, 180);
+		btnNewButton.setBounds(143, 10, 250, 140);
 		contentPane.add(btnNewButton);
 		
 		JButton btnProfesor = new JButton("Administrar Profesores");
@@ -45,7 +45,7 @@ public class AdminSeleccion extends JFrame {
 			}
 		});
 		btnProfesor.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnProfesor.setBounds(143, 253, 250, 180);
+		btnProfesor.setBounds(143, 173, 250, 140);
 		contentPane.add(btnProfesor);
 		
 		JButton btnNewButton_1 = new JButton("Volver");
@@ -58,6 +58,15 @@ public class AdminSeleccion extends JFrame {
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnNewButton_1.setBounds(143, 497, 250, 63);
 		contentPane.add(btnNewButton_1);
+		
+		JButton btnAdministrarAsignaturas = new JButton("Administrar Asignaturas");
+		btnAdministrarAsignaturas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnAdministrarAsignaturas.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnAdministrarAsignaturas.setBounds(143, 335, 250, 140);
+		contentPane.add(btnAdministrarAsignaturas);
 		setVisible(true);
 	}
 }

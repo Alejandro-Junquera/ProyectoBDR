@@ -40,6 +40,7 @@ public class ActualizarProfesor extends JFrame {
 	private int filaSeleccionada;
 	private JTable tableAsig;
 	private JTable tableAsigEli;
+	JButton Aplicar,Aplicar2;
 
 	public static void actualizarGrafico(ArrayList<Asignatura> actualizar,DefaultTableModel tablemodel) {
 		tablemodel.setRowCount(0);
@@ -149,8 +150,9 @@ public class ActualizarProfesor extends JFrame {
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				OperacionesBD.actualizarProfesor(textDNI.getText(),textNombre.getText(),textApell.getText(),textEmail.getText(),textContr.getText(),relativa,asignaturasLibres,asignaturasPropias,conn);
-				new AdminProfesor(conn);
 				dispose();
+				new AdminProfesor(conn);
+				
 			}
 		});
 		btnActualizar.setBounds(258, 663, 121, 40);
@@ -203,7 +205,7 @@ public class ActualizarProfesor extends JFrame {
 		scrollPane_AsigElim.setViewportView(tableAsigEli);
 		actualizarGrafico(asignaturasLibres,tablemodel2);
 		
-		JButton Aplicar = new JButton("Aplicar");
+		Aplicar = new JButton("Aplicar");
 		Aplicar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				asignaturasLibres.add(asignaturasPropias.get(filaSeleccionada));
@@ -211,13 +213,14 @@ public class ActualizarProfesor extends JFrame {
 				actualizarGrafico(asignaturasPropias,tablemodel);
 				actualizarGrafico(asignaturasLibres,tablemodel2);
 				desactivarBoton(asignaturasPropias, Aplicar);
+				desactivarBoton(asignaturasLibres, Aplicar2);
 			}
 		});
 		Aplicar.setToolTipText("");
 		Aplicar.setBounds(520, 562, 85, 21);
 		contentPane.add(Aplicar);
 		
-		JButton Aplicar2 = new JButton("Aplicar");
+		Aplicar2 = new JButton("Aplicar");
 		Aplicar2.setToolTipText("");
 		Aplicar2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -225,6 +228,7 @@ public class ActualizarProfesor extends JFrame {
 				asignaturasLibres.remove(filaSeleccionada);
 				actualizarGrafico(asignaturasLibres,tablemodel2);
 				actualizarGrafico(asignaturasPropias,tablemodel);
+				desactivarBoton(asignaturasPropias, Aplicar);
 				desactivarBoton(asignaturasLibres, Aplicar2);
 			}
 		});
