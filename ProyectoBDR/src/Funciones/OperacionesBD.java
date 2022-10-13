@@ -166,13 +166,13 @@ public class OperacionesBD {
 		
 	}
 	public static ArrayList<Alumno> ExtraccionTablaAlumno(Connection conn) {
-		String sql="select dni,nombre,apellidos,fecha_nacimiento,telefono,clave,foto from alumno;";
+		String sql="select dni,nombre,apellidos,fecha_nacimiento,telefono,clave,img from alumno;";
 		ArrayList<Alumno> alumnos=new ArrayList<>();
 		try {
 			PreparedStatement statement=conn.prepareStatement(sql);
 			ResultSet rs=statement.executeQuery();
 			while(rs.next()) {
-				alumnos.add(new Alumno(rs.getString("dni"),rs.getString("nombre"),rs.getString("apellidos"),rs.getString("fecha_nacimiento"),rs.getString("clave"),rs.getString("foto"),rs.getInt("telefono")));
+				alumnos.add(new Alumno(rs.getString("dni"),rs.getString("nombre"),rs.getString("apellidos"),rs.getString("fecha_nacimiento"),rs.getString("clave"),rs.getString("img"),rs.getInt("telefono")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
