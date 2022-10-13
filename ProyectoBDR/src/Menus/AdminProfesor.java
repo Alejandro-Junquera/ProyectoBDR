@@ -48,6 +48,7 @@ public class AdminProfesor extends JFrame {
 		setBounds(100, 100, 950, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLocationRelativeTo(null);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -110,7 +111,7 @@ public class AdminProfesor extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				new InicioSesion();
+				new AdminSeleccion(conn);
 			}
 		});
 		btnVolver.setBounds(736, 547, 121, 40);

@@ -38,7 +38,7 @@ public class InsertarProfesor extends JFrame {
 	private JTable tableAsig;
 	private JTable tableAsigEli;
 	private static DefaultTableModel tablemodel;
-	private DefaultTableModel tablemodel2;
+	private static DefaultTableModel tablemodel2;
 	private int filaSeleccionada;
 
 	
@@ -69,6 +69,7 @@ public class InsertarProfesor extends JFrame {
 		setBounds(100, 100, 1027, 750);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLocationRelativeTo(null);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);

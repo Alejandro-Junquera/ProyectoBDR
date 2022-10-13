@@ -14,9 +14,13 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
+import Funciones.Asignatura;
 import Funciones.OperacionesBD;
 import Funciones.insertarImagenes;
 
@@ -29,22 +33,50 @@ public class ActualizarProfesor extends JFrame {
 	private JTextField textApell;
 	private JTextField textEmail;
 	private JTextField textContr;
-	private ArrayList<String> a;
-	private String[] asignaturas;
+	private static ArrayList<Asignatura> asignaturasPropias;
+	public static ArrayList<Asignatura> asignaturasLibres;
+	private static DefaultTableModel tablemodel;
+	private static DefaultTableModel tablemodel2;
+	private int filaSeleccionada;
+	private JTable tableAsig;
+	private JTable tableAsigEli;
+
+	public static void actualizarGrafico(ArrayList<Asignatura> actualizar,DefaultTableModel tablemodel) {
+		tablemodel.setRowCount(0);
+		try {
+			for (int i = 0; i < actualizar.size(); i++) {
+				String asignatura=actualizar.get(i).getNombre();
+
+				Object[] data = { asignatura };
+				tablemodel.addRow(data);
+			}
+		} catch (java.lang.NullPointerException e) {
+		}
+
+	}
+	
+	public void desactivarBoton(ArrayList<Asignatura> asignaturas,JButton boton) {
+		if(asignaturas.isEmpty()) {
+			boton.setEnabled(false);
+		}else {
+			boton.setEnabled(true);
+		}
+	}
 
 	public ActualizarProfesor(String dni, String nombre, String apellidos, String email, String clave,String img,String asignatura,Connection conn) {
-		//a=OperacionesBD.ExtraccionAsignaturas(conn);
-		asignaturas=new String[a.size()];
+		asignaturasLibres=OperacionesBD.ExtraccionAsignaturas(conn);
+		asignaturasPropias=OperacionesBD.ExtraccionAsignaturasProf(dni, conn);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1027, 750);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLocationRelativeTo(null);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		JLabel lblImg = new JLabel("Insertar Imagen");
-		lblImg.setBounds(476, 30, 175, 210);
+		lblImg.setBounds(659, 38, 232, 210);
 		contentPane.add(lblImg);
 
 		JButton btnImg = new JButton("Añadir Imagen");
@@ -53,7 +85,7 @@ public class ActualizarProfesor extends JFrame {
 				relativa = insertarImagenes.generarRutaImg(relativa, lblImg);
 			}
 		});
-		btnImg.setBounds(476, 271, 175, 35);
+		btnImg.setBounds(659, 262, 222, 35);
 		contentPane.add(btnImg);
 
 		JLabel lblDNI = new JLabel("DNI");
@@ -63,6 +95,7 @@ public class ActualizarProfesor extends JFrame {
 		contentPane.add(lblDNI);
 
 		textDNI = new JTextField();
+		textDNI.setEditable(false);
 		textDNI.setColumns(10);
 		textDNI.setBounds(138, 126, 253, 40);
 		contentPane.add(textDNI);
@@ -111,20 +144,16 @@ public class ActualizarProfesor extends JFrame {
 		textContr.setBounds(138, 524, 253, 40);
 		contentPane.add(textContr);
 
-		JLabel lblAsignatura = new JLabel("Asignatura");
-		lblAsignatura.setForeground(new Color(64, 0, 64));
-		lblAsignatura.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblAsignatura.setBounds(524, 372, 109, 25);
-		contentPane.add(lblAsignatura);
-
 
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				OperacionesBD.actualizarProfesor(textDNI.getText(),textNombre.getText(),textApell.getText(),textEmail.getText(),textContr.getText(),relativa,asignaturasLibres,asignaturasPropias,conn);
+				new AdminProfesor(conn);
+				dispose();
 			}
 		});
-		btnActualizar.setBounds(163, 622, 121, 40);
+		btnActualizar.setBounds(258, 663, 121, 40);
 		contentPane.add(btnActualizar);
 
 		JButton btnVolver = new JButton("Volver");
@@ -134,14 +163,73 @@ public class ActualizarProfesor extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(420, 622, 121, 40);
+		btnVolver.setBounds(600, 663, 121, 40);
 		contentPane.add(btnVolver);
 		textDNI.setText(dni);
 		textNombre.setText(nombre);
 		textApell.setText(apellidos);
 		textEmail.setText(email);
 		textContr.setText(clave);
+		relativa=img;
 		lblImg.setIcon(insertarImagenes.ResizableImage(img, lblImg));
+		JScrollPane scrollPane_AsigDisp = new JScrollPane();
+		scrollPane_AsigDisp.setBounds(424, 351, 277, 195);
+		contentPane.add(scrollPane_AsigDisp);
+		
+		String[] columnas = new String[] { "Asignaturas Propias" };
+		tablemodel = new DefaultTableModel(columnas, 0);
+		tableAsig = new JTable(tablemodel);
+		
+		tableAsig.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+			         filaSeleccionada = tableAsig.rowAtPoint(evt.getPoint());
+			}
+		});
+		scrollPane_AsigDisp.setViewportView(tableAsig);
+		actualizarGrafico(asignaturasPropias,tablemodel);
+		
+		JScrollPane scrollPane_AsigElim = new JScrollPane();
+		scrollPane_AsigElim.setBounds(711, 351, 290, 195);
+		contentPane.add(scrollPane_AsigElim);
+		
+		String[] columnas2 = new String[] { "Asignaturas Libres" };
+		tablemodel2 = new DefaultTableModel(columnas2, 0);
+		tableAsigEli = new JTable(tablemodel2);
+		tableAsigEli.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+			         filaSeleccionada = tableAsigEli.rowAtPoint(evt.getPoint());
+			}
+		});
+		scrollPane_AsigElim.setViewportView(tableAsigEli);
+		actualizarGrafico(asignaturasLibres,tablemodel2);
+		
+		JButton Aplicar = new JButton("Aplicar");
+		Aplicar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				asignaturasLibres.add(asignaturasPropias.get(filaSeleccionada));
+				asignaturasPropias.remove(filaSeleccionada);
+				actualizarGrafico(asignaturasPropias,tablemodel);
+				actualizarGrafico(asignaturasLibres,tablemodel2);
+				desactivarBoton(asignaturasPropias, Aplicar);
+			}
+		});
+		Aplicar.setToolTipText("");
+		Aplicar.setBounds(520, 562, 85, 21);
+		contentPane.add(Aplicar);
+		
+		JButton Aplicar2 = new JButton("Aplicar");
+		Aplicar2.setToolTipText("");
+		Aplicar2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				asignaturasPropias.add(asignaturasLibres.get(filaSeleccionada));
+				asignaturasLibres.remove(filaSeleccionada);
+				actualizarGrafico(asignaturasLibres,tablemodel2);
+				actualizarGrafico(asignaturasPropias,tablemodel);
+				desactivarBoton(asignaturasLibres, Aplicar2);
+			}
+		});
+		Aplicar2.setBounds(825, 562, 85, 21);
+		contentPane.add(Aplicar2);
 		setVisible(true);
 	}
 }

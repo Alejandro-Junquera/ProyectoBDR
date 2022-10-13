@@ -23,6 +23,7 @@ public class AdminSeleccion extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
 		
 		JButton btnNewButton = new JButton("Administrar Alumnos");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -40,6 +41,7 @@ public class AdminSeleccion extends JFrame {
 		btnProfesor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AdminProfesor prof=new AdminProfesor(conn);
+				dispose();
 			}
 		});
 		btnProfesor.setFont(new Font("Tahoma", Font.PLAIN, 18));

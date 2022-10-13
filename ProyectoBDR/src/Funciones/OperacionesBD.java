@@ -70,6 +70,25 @@ public class OperacionesBD {
 		
 		return null;	
 	}
+	public static ArrayList<Asignatura> ExtraccionAsignaturasProf(String dni,Connection conn){
+		String sql="select * from asignatura where dni_pro=?;";
+		ArrayList<Asignatura> asignaturas=new ArrayList<Asignatura>();
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1,dni);
+			ResultSet rs=statement.executeQuery();
+			while(rs.next()) {
+				asignaturas.add(new Asignatura(rs.getInt("id"),rs.getString("nombre"),rs.getInt("horasSemanales"),rs.getString("dni_pro")));
+			}
+			statement.close();
+			return asignaturas;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;	
+	}
 	public static void borrarDNIProfAsignatura(String dni,Connection conn) {
 		String sql="update asignatura set dni_pro=? where dni_pro=?;";
 		try {
@@ -95,6 +114,38 @@ public class OperacionesBD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public static void actualizarProfesor(String dni,String nombre,String apellidos,String email,String contrasenia,String img,ArrayList<Asignatura> asigLibres,ArrayList<Asignatura> asigProp,Connection conn) {
+		String sql="update asignatura set dni_pro=? where dni_pro=?;";
+		String sql2="update profesor set nombre=?,apellidos=?,email=?,clave=?,img=? where dni=?";
+		String sql3="update asignatura set dni_pro=? where nombre=?;";
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			PreparedStatement statement2=conn.prepareStatement(sql2);
+			PreparedStatement statement3=conn.prepareStatement(sql3);
+			for(int i=0;i<asigLibres.size();i++) {
+				statement.setString(1,null);
+				statement.setString(2,dni);
+				int rs=statement.executeUpdate();
+			}
+			statement2.setString(1,nombre);
+			statement2.setString(2,apellidos);
+			statement2.setString(3,email);
+			statement2.setString(4,contrasenia);
+			statement2.setString(5,img);
+			statement2.setString(6,dni);
+			int rs2=statement2.executeUpdate();
+			for(int i=0;i<asigProp.size();i++) {
+				statement3.setString(1,dni);
+				statement3.setString(2,asigProp.get(i).getNombre());
+				int rs3=statement3.executeUpdate();
+			}
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	public static ArrayList<Alumno> ExtraccionTablaAlumno(Connection conn) {
 		String sql="select dni,nombre,apellidos,fecha_nacimiento,telefono,clave,foto from alumno;";
