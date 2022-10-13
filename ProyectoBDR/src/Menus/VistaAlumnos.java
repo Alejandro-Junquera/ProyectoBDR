@@ -44,7 +44,10 @@ public class VistaAlumnos extends JFrame {
 	}
 
 	private void llenarTabla() {
+<<<<<<< HEAD
 		model.setRowCount(0);
+=======
+>>>>>>> branch 'master' of https://github.com/Alejandro-Junquera/ProyectoBDR.git
 		for (Alumno alum:alumnos) {
 			this.fila = new Object[7];
 			try {

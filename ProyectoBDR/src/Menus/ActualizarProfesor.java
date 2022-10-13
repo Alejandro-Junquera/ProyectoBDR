@@ -40,7 +40,7 @@ public class ActualizarProfesor extends JFrame {
 	private int filaSeleccionada;
 	private JTable tableAsig;
 	private JTable tableAsigEli;
-	JButton Aplicar,Aplicar2;
+	private JButton Aplicar,Aplicar2;
 
 	public static void actualizarGrafico(ArrayList<Asignatura> actualizar,DefaultTableModel tablemodel) {
 		tablemodel.setRowCount(0);

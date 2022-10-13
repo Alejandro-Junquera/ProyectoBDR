@@ -108,9 +108,9 @@ public class OperacionesBD {
 		return null;	
 	}
 	
-	public ArrayList<Asignatura> extraccionAsignaturasAlumno(Connection conn, String dni) {
+	public static ArrayList<Asignatura> extraccionAsignaturasAlumno(Connection conn, String dni) {
 		ArrayList<Asignatura> res=new ArrayList<Asignatura>();
-		String sql="select nombre from asignatura where id=(select id_asi from matricula where dni_alu=?);";
+		String sql="select * from asignatura where id=(select id_asi from matricula where dni_alu=?);";
 		
 		try {
 			PreparedStatement statement=conn.prepareStatement(sql);
