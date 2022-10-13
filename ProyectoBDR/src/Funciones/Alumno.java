@@ -7,7 +7,7 @@ public class Alumno extends Persona{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Alumno(String dNI, String nombre, String apellidos, String clave, String img,String fechaNac,int tlf) {
+	public Alumno(String dNI, String nombre, String apellidos,String fechaNac,int tlf, String clave, String img) {
 		super(dNI, nombre, apellidos, clave, img);
 		this.fechaNac=fechaNac;
 		this.tlf=tlf;

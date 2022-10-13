@@ -33,6 +33,7 @@ public class VistaAlumnos extends JFrame {
 	private JButton btnEliminarAlumno;
 	private JButton btnMostrarNotas;
 	private JScrollPane scrollPane;
+	protected int filaSelecionada;
 	
 	
 	public VistaAlumnos() {
@@ -43,7 +44,7 @@ public class VistaAlumnos extends JFrame {
 	}
 
 	private void llenarTabla() {
-		//prueba
+		model.setRowCount(0);
 		for (Alumno alum:alumnos) {
 			this.fila = new Object[7];
 			try {
@@ -52,8 +53,10 @@ public class VistaAlumnos extends JFrame {
 				fila[2]=alum.getApellidos();
 				fila[3]=alum.getFechaNac();
 				fila[4]=alum.getTlf();
-				fila[5]=alum.getImg();
-				fila[6]=alum.getClave();
+				fila[5]=alum.getClave();
+				fila[6]=alum.getImg();
+				
+				
 			}
 			catch(NullPointerException te) {	
 			}
@@ -93,7 +96,12 @@ public class VistaAlumnos extends JFrame {
 		panel.add(scrollPane);
 		
 		tablaAlumnos = new JTable();
-
+		tablaAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				filaSelecionada = tablaAlumnos.rowAtPoint(evt.getPoint());
+				
+			}
+		});
 		model= new DefaultTableModel() {
 			
 			private static final long serialVersionUID = 1L;
@@ -129,7 +137,10 @@ public class VistaAlumnos extends JFrame {
 		btnEliminarAlumno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Conexion conn = new Conexion();
-				OperacionesBD.BorrarAlumno(tablaAlumnos.getSelectedRow(), conn.conectarMySQL());
+				OperacionesBD.borrarDNIProfAsignatura(alumnos.get(filaSelecionada).getDNI(), conn.conectarMySQL());
+				OperacionesBD.BorrarAlumno(alumnos.get(filaSelecionada).getDNI(), conn.conectarMySQL());
+				alumnos=OperacionesBD.ExtraccionTablaAlumno(conn.conectarMySQL());
+				llenarTabla();
 			}
 		});
 		btnEliminarAlumno.setBounds(397, 352, 121, 40);

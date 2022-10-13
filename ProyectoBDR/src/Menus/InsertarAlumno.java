@@ -6,11 +6,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
 import Conexiones.Conexion;
+import Funciones.Alumno;
+import Funciones.Asignatura;
+
 import javax.swing.JLabel;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
  
 
@@ -75,7 +81,8 @@ public class InsertarAlumno extends JFrame  {
 			public void actionPerformed(ActionEvent e) {
 				Conexion conn = new Conexion();
 				System.out.println(textFecha.getText());
-				Funciones.OperacionesBD.insertarAlumno(textDNI.getText(), textNombre.getText(),textApellidos.getText(),Integer.parseInt(textTelefono.getText()),textFecha.getText(),textContrasenia.getText(),lblFoto.getText(),conn.conectarMySQL());
+				Funciones.OperacionesBD.insertarAlumno(textDNI.getText(), textNombre.getText(),textApellidos.getText(),textFecha.getText(),Integer.parseInt(textTelefono.getText()),textContrasenia.getText(),lblFoto.getText(),conn.conectarMySQL());
+				dispose();
 			}
 		});
 		btnAniadir.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -128,4 +135,5 @@ public class InsertarAlumno extends JFrame  {
 		setVisible(true);
 		
 	}
+
 }
