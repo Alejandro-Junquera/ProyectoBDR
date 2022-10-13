@@ -89,6 +89,24 @@ public class OperacionesBD {
 		
 		return null;	
 	}
+	public static ArrayList<Asignatura> ExtraccionTodasAsignaturas(Connection conn){
+		String sql="select * from asignatura;";
+		ArrayList<Asignatura> asignaturas=new ArrayList<Asignatura>();
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			ResultSet rs=statement.executeQuery();
+			while(rs.next()) {
+				asignaturas.add(new Asignatura(rs.getInt("id"),rs.getString("nombre"),rs.getInt("horasSemanales"),rs.getString("dni_pro")));
+			}
+			statement.close();
+			return asignaturas;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;	
+	}
 	public static void borrarDNIProfAsignatura(String dni,Connection conn) {
 		String sql="update asignatura set dni_pro=? where dni_pro=?;";
 		try {
