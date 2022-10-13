@@ -41,9 +41,9 @@ public class AlumnoInfo extends JFrame {
 	private String tlf;
 	private JTextField txtTusDatos;
 	private String relativa;
-	private Object[] fila;
 	private static ArrayList<Asignatura> asignaturas=new ArrayList<Asignatura>();
 	private JTable table;
+	private int filaSelecionada;
 
 	public AlumnoInfo(Connection conn, String dniAlumno) {
 		asignaturas=OperacionesBD.extraccionAsignaturasAlumno(conn, dniAlumno);
@@ -139,9 +139,30 @@ public class AlumnoInfo extends JFrame {
 			}	
 		};
 		table = new JTable(modeloAsig);
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				filaSelecionada = table.rowAtPoint(evt.getPoint());
+				
+			}
+		});
 		scrollPane_1.setViewportView(table);
 		actualizarTablaAsig();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		JButton btnConsultarNotas = new JButton("Consultar notas");
+		btnConsultarNotas.setBounds(128, 389, 127, 23);
+		contentPane.add(btnConsultarNotas);
+		btnConsultarNotas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//ActualizarProfesor ac=new ActualizarProfesor(profesores.get(filaSelecionada)
+				//.getDNI(),profesores.get(filaSelecionada).getNombre(),profesores
+				//.get(filaSelecionada).getApellidos(),profesores.get(filaSelecionada)
+				//.getEmail(),profesores.get(filaSelecionada).getClave(),profesores
+				//.get(filaSelecionada).getImg(),"Asignatura",conn);
+				NotasAlumno n=new NotasAlumno(asignaturas.get(filaSelecionada).getNombre(),"a", "a");
+				//dispose();
+			}
+		});
 	}
 	public static void actualizarTablaAsig() {
 		modeloAsig.setRowCount(0);
