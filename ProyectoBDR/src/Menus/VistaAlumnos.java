@@ -43,7 +43,6 @@ public class VistaAlumnos extends JFrame {
 	}
 
 	private void llenarTabla() {
-		//prueba
 		for (Alumno alum:alumnos) {
 			this.fila = new Object[7];
 			try {

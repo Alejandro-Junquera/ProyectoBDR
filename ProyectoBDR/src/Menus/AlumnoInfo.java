@@ -32,9 +32,8 @@ public class AlumnoInfo extends JFrame {
 
 	private JPanel contentPane;
 	private JTable tablaAlum;
-	private JTable tablaAsig;
 	private DefaultTableModel modeloAlum = new DefaultTableModel();
-	private DefaultTableModel modeloAsig = new DefaultTableModel();
+	private static DefaultTableModel modeloAsig;
 	private String dni;
 	private String nombre;
 	private String apellidos;
@@ -42,11 +41,12 @@ public class AlumnoInfo extends JFrame {
 	private String tlf;
 	private JTextField txtTusDatos;
 	private String relativa;
-	private JTextField txtTusAsignaturas;
 	private Object[] fila;
-	private ArrayList<Asignatura> asignaturas=new ArrayList<Asignatura>();
+	private static ArrayList<Asignatura> asignaturas=new ArrayList<Asignatura>();
+	private JTable table;
 
 	public AlumnoInfo(Connection conn, String dniAlumno) {
+		asignaturas=OperacionesBD.extraccionAsignaturasAlumno(conn, dniAlumno);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 650);
@@ -124,34 +124,37 @@ public class AlumnoInfo extends JFrame {
 		txtTusDatos.setColumns(10); 
 		txtTusDatos.setEditable(false);
 		
-		txtTusAsignaturas = new JTextField();
-		txtTusAsignaturas.setText("Tus asignaturas");
-		txtTusAsignaturas.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		txtTusAsignaturas.setEditable(false);
-		txtTusAsignaturas.setColumns(10);
-		txtTusAsignaturas.setBounds(92, 165, 183, 39);
-		txtTusAsignaturas.setEditable(false);
-		contentPane.add(txtTusAsignaturas);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(36, 215, 298, 143);
-		contentPane.add(scrollPane_1);
-		asignaturas=OperacionesBD.ExtraccionTodasAsignaturas(conn);
-		
-		tablaAsig = new JTable();
-		scrollPane_1.setViewportView(tablaAsig);
-		tablaAsig.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		modeloAsig= new DefaultTableModel() {
-			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int x,int y) {
-				return false;	
-			}
-		};
-		tablaAsig.setModel(modeloAsig);
-		panel1.add(new JScrollPane(tablaAsig));
+		panel1.add(new JScrollPane());
 		contentPane.add(panel1, BorderLayout.CENTER);
 		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(36, 235, 308, 143);
+		contentPane.add(scrollPane_1);
+		String[] columna=new String[] {"Asignatura"};
+		modeloAsig=new DefaultTableModel(columna,0) {
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int x,int y) {
+				return false;
+			}	
+		};
+		table = new JTable(modeloAsig);
+		scrollPane_1.setViewportView(table);
+		actualizarTablaAsig();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
-	
+	public static void actualizarTablaAsig() {
+		modeloAsig.setRowCount(0);
+		try {
+			for (int i = 0; i < asignaturas.size(); i++) {
+				String nombre = asignaturas.get(i).getNombre();
+
+				Object[] data = { nombre };
+				modeloAsig.addRow(data);
+				System.out.println(nombre);
+			}
+		} catch (java.lang.NullPointerException e) {
+		}
+
+	}
 }
