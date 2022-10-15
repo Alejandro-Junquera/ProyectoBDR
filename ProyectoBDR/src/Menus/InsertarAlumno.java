@@ -2,21 +2,19 @@ package Menus;
 
 
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-
 import Conexiones.Conexion;
-import Funciones.Alumno;
-import Funciones.Asignatura;
-
 import javax.swing.JLabel;
-import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.io.File;
 import java.awt.event.ActionEvent;
  
 
@@ -30,14 +28,18 @@ public class InsertarAlumno extends JFrame  {
 	private JTextField textTelefono;
 	private JTextField textFecha;
 	private JLabel lblFoto;
+	private File ruta;
+	private Image img;
 
 
-	/**
-	 * Create the frame.
-	 */
 	public InsertarAlumno() {
 		setBounds(100, 100, 1080, 561);
 		contentPane = new JPanel();
+		componentes();
+	}
+
+
+	private void componentes() {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
 
@@ -74,8 +76,6 @@ public class InsertarAlumno extends JFrame  {
 		textDNI.setBounds(314, 49, 253, 40);
 		contentPane.add(textDNI);
 		
-		ButtonGroup cursos = new ButtonGroup();
-		
 		JButton btnAniadir = new JButton("Añadir");
 		btnAniadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -83,6 +83,8 @@ public class InsertarAlumno extends JFrame  {
 				System.out.println(textFecha.getText());
 				Funciones.OperacionesBD.insertarAlumno(textDNI.getText(), textNombre.getText(),textApellidos.getText(),textFecha.getText(),Integer.parseInt(textTelefono.getText()),textContrasenia.getText(),lblFoto.getText(),conn.conectarMySQL());
 				dispose();
+				VistaAlumnos va= new VistaAlumnos();
+				va.setVisible(true);
 			}
 		});
 		btnAniadir.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -90,15 +92,25 @@ public class InsertarAlumno extends JFrame  {
 		contentPane.add(btnAniadir);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnVolver.setBounds(679, 456, 180, 40);
 		contentPane.add(btnVolver);
 		
-		lblFoto = new JLabel("Imagen");
+		lblFoto = new JLabel("");
 		lblFoto.setBounds(691, 93, 152, 190);
 		contentPane.add(lblFoto);
 		
 		JButton btnAadirImagen = new JButton("Añadir Imagen");
+		btnAadirImagen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				elegirFoto();
+			}
+		});
 		btnAadirImagen.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAadirImagen.setBounds(691, 301, 152, 40);
 		contentPane.add(btnAadirImagen);
@@ -134,6 +146,22 @@ public class InsertarAlumno extends JFrame  {
 		contentPane.add(textFecha);
 		setVisible(true);
 		
+	}
+
+
+	protected void elegirFoto() {
+		JFileChooser carpeta = new JFileChooser();
+		carpeta.setDialogTitle("Seleccionar imagen");
+		File rutaCarpeta = new File("");
+		carpeta.setCurrentDirectory(rutaCarpeta);
+		int ventana= carpeta.showOpenDialog(carpeta);
+		if(ventana==JFileChooser.APPROVE_OPTION) {
+			ruta=carpeta.getSelectedFile();
+			lblFoto.setText(String.valueOf(ruta));
+			img=getToolkit().getImage(String.valueOf(lblFoto.getText()));
+			img=img.getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(),Image.SCALE_DEFAULT);
+			lblFoto.setIcon(new ImageIcon(img));
+		}
 	}
 
 }

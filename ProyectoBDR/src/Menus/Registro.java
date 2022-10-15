@@ -1,19 +1,11 @@
 package Menus;
 
-import java.awt.EventQueue;
 import java.awt.Font;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
-
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.ButtonGroup;
-import javax.swing.JRadioButton;
 import javax.swing.JButton;
 
 public class Registro extends JFrame {
@@ -27,20 +19,17 @@ public class Registro extends JFrame {
 	private JTextField textApellidos;
 	private JTextField textTelefono;
 
-
-	/**
-	 * Create the frame.
-	 */
 	public Registro() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1080, 561);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
-
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+		componentes();	
+	}
+
+	private void componentes() {
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNombre.setBounds(42, 66, 109, 25);
@@ -81,8 +70,6 @@ public class Registro extends JFrame {
 		textDNI.setBounds(161, 170, 253, 40);
 		contentPane.add(textDNI);
 		
-		ButtonGroup cursos = new ButtonGroup();
-		
 		JButton btnRegistrarse = new JButton("Registrarse");
 		btnRegistrarse.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnRegistrarse.setBounds(206, 456, 180, 40);
@@ -121,7 +108,6 @@ public class Registro extends JFrame {
 		textTelefono.setColumns(10);
 		textTelefono.setBounds(566, 180, 253, 40);
 		contentPane.add(textTelefono);
-		setVisible(true);
-		
+		setVisible(true);	
 	}
 }

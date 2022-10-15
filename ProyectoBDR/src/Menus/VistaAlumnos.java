@@ -7,12 +7,13 @@ import javax.swing.table.DefaultTableModel;
 import Conexiones.Conexion;
 import Funciones.Alumno;
 import Funciones.OperacionesBD;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
@@ -33,19 +34,26 @@ public class VistaAlumnos extends JFrame {
 	private JButton btnEliminarAlumno;
 	private JButton btnMostrarNotas;
 	private JScrollPane scrollPane;
-	protected int filaSelecionada;
+	protected int filaSeleccionada;
+	private Image img;
+	private JLabel lblFotoAlumno;
 	
 	
 	public VistaAlumnos() {
 		setBounds(100, 100, 769, 536);
 		Conexion conn = new Conexion();
-		alumnos=OperacionesBD.ExtraccionTablaAlumno(conn.conectarMySQL());
+		this.alumnos=OperacionesBD.ExtraccionTablaAlumno(conn.conectarMySQL());
 		componentes();
 	}
-
-	private void llenarTabla() {
+	
+	void llenarTabla() {
+		tablaAlumnos.getColumnModel().getColumn(6).setMaxWidth(0);
+		tablaAlumnos.getColumnModel().getColumn(6).setMinWidth(0);
+		tablaAlumnos.getColumnModel().getColumn(6).setPreferredWidth(0);
+		Conexion conn = new Conexion();
+		this.alumnos=OperacionesBD.ExtraccionTablaAlumno(conn.conectarMySQL());
 		model.setRowCount(0);
-		for (Alumno alum:alumnos) {
+		for (Alumno alum:this.alumnos) {
 			this.fila = new Object[7];
 			try {
 				fila[0]=alum.getDNI();
@@ -54,9 +62,7 @@ public class VistaAlumnos extends JFrame {
 				fila[3]=alum.getFechaNac();
 				fila[4]=alum.getTlf();
 				fila[5]=alum.getClave();
-				fila[6]=alum.getImg();
-				
-				
+				fila[6]=alum.getImg();			
 			}
 			catch(NullPointerException te) {	
 			}
@@ -65,13 +71,11 @@ public class VistaAlumnos extends JFrame {
 		
 	}
 
-	private void componentes() {
+	void componentes() {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
 		panel = new JPanel();
 		panel.setBounds(0, 0, 755, 499);
 		contentPane.add(panel);
@@ -91,15 +95,19 @@ public class VistaAlumnos extends JFrame {
 		lblTitulo.setBounds(261, 53, 178, 48);
 		panel.add(lblTitulo);
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(48, 132, 616, 150);
+		scrollPane.setBounds(67, 247, 616, 150);
 		
 		panel.add(scrollPane);
 		
 		tablaAlumnos = new JTable();
 		tablaAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				filaSelecionada = tablaAlumnos.rowAtPoint(evt.getPoint());
-				
+				filaSeleccionada = tablaAlumnos.rowAtPoint(evt.getPoint());
+				lblFotoAlumno.setText(String.valueOf(alumnos.get(filaSeleccionada).getImg()));
+				System.out.println(String.valueOf(alumnos.get(filaSeleccionada).getImg()));
+				img=getToolkit().getImage(String.valueOf(lblFotoAlumno.getText()));
+				img=img.getScaledInstance(lblFotoAlumno.getWidth(), lblFotoAlumno.getHeight(),Image.SCALE_DEFAULT);
+				lblFotoAlumno.setIcon(new ImageIcon(img));
 			}
 		});
 		model= new DefaultTableModel() {
@@ -122,28 +130,28 @@ public class VistaAlumnos extends JFrame {
 		btnInsertarAlumno = new JButton("Insertar");
 		btnInsertarAlumno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dispose();
 				InsertarAlumno ia = new InsertarAlumno();
-				ia.setVisible(true);
 			}
 		});
-		btnInsertarAlumno.setBounds(66, 352, 121, 40);
+		btnInsertarAlumno.setBounds(67, 422, 121, 40);
 		panel.add(btnInsertarAlumno);
 		
 		btnActualizarAlumno = new JButton("Actualizar");
-		btnActualizarAlumno.setBounds(228, 352, 121, 40);
+		btnActualizarAlumno.setBounds(224, 422, 121, 40);
 		panel.add(btnActualizarAlumno);
 		
 		btnEliminarAlumno = new JButton("Eliminar");
 		btnEliminarAlumno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Conexion conn = new Conexion();
-				OperacionesBD.borrarDNIProfAsignatura(alumnos.get(filaSelecionada).getDNI(), conn.conectarMySQL());
-				OperacionesBD.BorrarAlumno(alumnos.get(filaSelecionada).getDNI(), conn.conectarMySQL());
+				OperacionesBD.borrarDNIProfAsignatura(alumnos.get(filaSeleccionada).getDNI(), conn.conectarMySQL());
+				OperacionesBD.BorrarAlumno(alumnos.get(filaSeleccionada).getDNI(), conn.conectarMySQL());
 				alumnos=OperacionesBD.ExtraccionTablaAlumno(conn.conectarMySQL());
 				llenarTabla();
 			}
 		});
-		btnEliminarAlumno.setBounds(397, 352, 121, 40);
+		btnEliminarAlumno.setBounds(404, 422, 121, 40);
 		panel.add(btnEliminarAlumno);
 		
 		btnMostrarNotas = new JButton("Mostrar notas");
@@ -151,8 +159,11 @@ public class VistaAlumnos extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnMostrarNotas.setBounds(564, 352, 121, 40);
+		btnMostrarNotas.setBounds(574, 422, 121, 40);
 		panel.add(btnMostrarNotas);
 		
+		lblFotoAlumno = new JLabel("");
+		lblFotoAlumno.setBounds(540, 103, 128, 119);
+		panel.add(lblFotoAlumno);
 	}
 }
