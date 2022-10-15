@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.ProcessHandle.Info;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import Funciones.Alumno;
 import Funciones.Asignatura;
 import Funciones.OperacionesBD;
+import Funciones.RA;
 import Funciones.insertarImagenes;
 
 import javax.swing.JLabel;
@@ -44,8 +46,10 @@ public class AlumnoInfo extends JFrame {
 	private static ArrayList<Asignatura> asignaturas=new ArrayList<Asignatura>();
 	private JTable table;
 	private int filaSelecionada;
+	private ArrayList<RA> rasAsig;
 
 	public AlumnoInfo(Connection conn, String dniAlumno) {
+		
 		asignaturas=OperacionesBD.extraccionAsignaturasAlumno(conn, dniAlumno);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,6 +88,7 @@ public class AlumnoInfo extends JFrame {
 			
 		} catch (Exception ex) {
 		}
+		setTitle("Info. de "+nombre);
 		contentPane.add(panel1, BorderLayout.CENTER);
 		
 		JButton btnNewButton_1 = new JButton("Cerrar sesion");
@@ -142,24 +147,20 @@ public class AlumnoInfo extends JFrame {
 		table.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				filaSelecionada = table.rowAtPoint(evt.getPoint());
-				
+				rasAsig=OperacionesBD.extraerRAsAsig(conn, asignaturas.get(filaSelecionada).getId());
 			}
 		});
+		
 		scrollPane_1.setViewportView(table);
 		actualizarTablaAsig();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
 		JButton btnConsultarNotas = new JButton("Consultar notas");
 		btnConsultarNotas.setBounds(128, 389, 127, 23);
 		contentPane.add(btnConsultarNotas);
 		btnConsultarNotas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//ActualizarProfesor ac=new ActualizarProfesor(profesores.get(filaSelecionada)
-				//.getDNI(),profesores.get(filaSelecionada).getNombre(),profesores
-				//.get(filaSelecionada).getApellidos(),profesores.get(filaSelecionada)
-				//.getEmail(),profesores.get(filaSelecionada).getClave(),profesores
-				//.get(filaSelecionada).getImg(),"Asignatura",conn);
-				NotasAlumno n=new NotasAlumno(asignaturas.get(filaSelecionada).getNombre(),"a", "a");
+				NotasAlumno n=new NotasAlumno(asignaturas.get(filaSelecionada).getId(),
+						asignaturas.get(filaSelecionada).getNombre(),dniAlumno,nombre, rasAsig);
 				//dispose();
 			}
 		});
@@ -172,7 +173,6 @@ public class AlumnoInfo extends JFrame {
 
 				Object[] data = { nombre };
 				modeloAsig.addRow(data);
-				System.out.println(nombre);
 			}
 		} catch (java.lang.NullPointerException e) {
 		}

@@ -110,7 +110,7 @@ public class OperacionesBD {
 	
 	public static ArrayList<Asignatura> extraccionAsignaturasAlumno(Connection conn, String dni) {
 		ArrayList<Asignatura> res=new ArrayList<Asignatura>();
-		String sql="select * from asignatura where id=(select id_asi from matricula where dni_alu=?);";
+		String sql="select * from asignatura where id in(select id_asi from matricula where dni_alu=?);";
 		
 		try {
 			PreparedStatement statement=conn.prepareStatement(sql);
@@ -244,5 +244,24 @@ public class OperacionesBD {
 		}
 
 	}
-
+	
+	public static ArrayList<RA> extraerRAsAsig(Connection conn, int idAsig){
+		ArrayList<RA> res=new ArrayList<RA>();
+		String sql="select * from RA where id_asi=?;";
+		
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			statement.setInt(1,idAsig);
+			ResultSet rs=statement.executeQuery();
+			while(rs.next()) {
+				res.add(new RA(rs.getInt("id"),rs.getString("nombre"), rs.getString("descripcion"),
+						rs.getInt("ponderacion"),rs.getInt("id_asi")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return res;
+	}
 }
