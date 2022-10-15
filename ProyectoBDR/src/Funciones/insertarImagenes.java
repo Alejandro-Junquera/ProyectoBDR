@@ -35,11 +35,6 @@ public class insertarImagenes {
 			}
 			imgLabel.setIcon(ResizableImage(relativa, imgLabel));
 			return relativa;
-		} else if (relativa.equals(".\\")) {
-			relativa = ".\\Imagenes\\Fotos\\defecto.png";
-			return relativa;
-		} else {
-			JOptionPane.showMessageDialog(null, "No se seleccioono imagen");
 		}
 		return relativa;
 		

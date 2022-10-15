@@ -107,10 +107,13 @@ public class AdminProfesor extends JFrame {
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int op=JOptionPane.showConfirmDialog(null, "¿Seguro que deseas eliminar al profesor?");
+				if(op==0) {
 				OperacionesBD.borrarDNIProfAsignatura(profesores.get(filaSelecionada).getDNI(), conn);
 				OperacionesBD.borrarProfesor(profesores.get(filaSelecionada).getDNI(), conn);
 				profesores=OperacionesBD.ExtraccionTablaProfesor(conn);
 				actualizarGrafico();
+				}
 				
 			}
 		});

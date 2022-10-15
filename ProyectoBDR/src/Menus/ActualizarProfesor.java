@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -40,13 +41,13 @@ public class ActualizarProfesor extends JFrame {
 	private int filaSeleccionada;
 	private JTable tableAsig;
 	private JTable tableAsigEli;
-	private JButton Aplicar,Aplicar2;
+	private JButton Aplicar, Aplicar2;
 
-	public static void actualizarGrafico(ArrayList<Asignatura> actualizar,DefaultTableModel tablemodel) {
+	public static void actualizarGrafico(ArrayList<Asignatura> actualizar, DefaultTableModel tablemodel) {
 		tablemodel.setRowCount(0);
 		try {
 			for (int i = 0; i < actualizar.size(); i++) {
-				String asignatura=actualizar.get(i).getNombre();
+				String asignatura = actualizar.get(i).getNombre();
 
 				Object[] data = { asignatura };
 				tablemodel.addRow(data);
@@ -55,18 +56,29 @@ public class ActualizarProfesor extends JFrame {
 		}
 
 	}
-	
-	public void desactivarBoton(ArrayList<Asignatura> asignaturas,JButton boton) {
-		if(asignaturas.isEmpty()) {
+
+	public void desactivarBoton(ArrayList<Asignatura> asignaturas, JButton boton) {
+		if (asignaturas.isEmpty()) {
 			boton.setEnabled(false);
-		}else {
+		} else {
 			boton.setEnabled(true);
 		}
 	}
 
-	public ActualizarProfesor(String dni, String nombre, String apellidos, String email, String clave,String img,String asignatura,Connection conn) {
-		asignaturasLibres=OperacionesBD.ExtraccionAsignaturas(conn);
-		asignaturasPropias=OperacionesBD.ExtraccionAsignaturasProf(dni, conn);
+	public boolean combrobarCamposVacios(JTextField textDNI, JTextField textNombre, JTextField textApell,
+			JTextField textEmail, JTextField textContr) {
+		if (!textDNI.getText().isEmpty() && !textNombre.getText().isEmpty() && !textApell.getText().isEmpty()
+				&& !textEmail.getText().isEmpty() && !textContr.getText().isEmpty()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public ActualizarProfesor(String dni, String nombre, String apellidos, String email, String clave, String img,
+			String asignatura, Connection conn) {
+		asignaturasLibres = OperacionesBD.ExtraccionAsignaturas(conn);
+		asignaturasPropias = OperacionesBD.ExtraccionAsignaturasProf(dni, conn);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1027, 750);
 		contentPane = new JPanel();
@@ -145,14 +157,23 @@ public class ActualizarProfesor extends JFrame {
 		textContr.setBounds(138, 524, 253, 40);
 		contentPane.add(textContr);
 
-
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				OperacionesBD.actualizarProfesor(textDNI.getText(),textNombre.getText(),textApell.getText(),textEmail.getText(),textContr.getText(),relativa,asignaturasLibres,asignaturasPropias,conn);
-				dispose();
-				new AdminProfesor(conn);
-				
+				if (combrobarCamposVacios(textDNI, textNombre, textApell, textEmail, textContr)) {
+					if (asignaturasPropias.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "No se puede actualizar un  profesor sin asignaturas");
+					} else {
+						OperacionesBD.actualizarProfesor(textDNI.getText(), textNombre.getText(), textApell.getText(),
+								textEmail.getText(), textContr.getText(), relativa, asignaturasLibres,
+								asignaturasPropias, conn);
+						dispose();
+						new AdminProfesor(conn);
+						JOptionPane.showMessageDialog(null, "Profesor actualizado correctamente");
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "No puede haber campos vacios");
+				}
 			}
 		});
 		btnActualizar.setBounds(258, 663, 121, 40);
@@ -172,46 +193,46 @@ public class ActualizarProfesor extends JFrame {
 		textApell.setText(apellidos);
 		textEmail.setText(email);
 		textContr.setText(clave);
-		relativa=img;
+		relativa = img;
 		lblImg.setIcon(insertarImagenes.ResizableImage(img, lblImg));
 		JScrollPane scrollPane_AsigDisp = new JScrollPane();
 		scrollPane_AsigDisp.setBounds(424, 351, 277, 195);
 		contentPane.add(scrollPane_AsigDisp);
-		
+
 		String[] columnas = new String[] { "Asignaturas Propias" };
 		tablemodel = new DefaultTableModel(columnas, 0);
 		tableAsig = new JTable(tablemodel);
-		
+
 		tableAsig.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-			         filaSeleccionada = tableAsig.rowAtPoint(evt.getPoint());
+				filaSeleccionada = tableAsig.rowAtPoint(evt.getPoint());
 			}
 		});
 		scrollPane_AsigDisp.setViewportView(tableAsig);
-		actualizarGrafico(asignaturasPropias,tablemodel);
-		
+		actualizarGrafico(asignaturasPropias, tablemodel);
+
 		JScrollPane scrollPane_AsigElim = new JScrollPane();
 		scrollPane_AsigElim.setBounds(711, 351, 290, 195);
 		contentPane.add(scrollPane_AsigElim);
-		
+
 		String[] columnas2 = new String[] { "Asignaturas Libres" };
 		tablemodel2 = new DefaultTableModel(columnas2, 0);
 		tableAsigEli = new JTable(tablemodel2);
 		tableAsigEli.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-			         filaSeleccionada = tableAsigEli.rowAtPoint(evt.getPoint());
+				filaSeleccionada = tableAsigEli.rowAtPoint(evt.getPoint());
 			}
 		});
 		scrollPane_AsigElim.setViewportView(tableAsigEli);
-		actualizarGrafico(asignaturasLibres,tablemodel2);
-		
+		actualizarGrafico(asignaturasLibres, tablemodel2);
+
 		Aplicar = new JButton("Aplicar");
 		Aplicar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				asignaturasLibres.add(asignaturasPropias.get(filaSeleccionada));
 				asignaturasPropias.remove(filaSeleccionada);
-				actualizarGrafico(asignaturasPropias,tablemodel);
-				actualizarGrafico(asignaturasLibres,tablemodel2);
+				actualizarGrafico(asignaturasPropias, tablemodel);
+				actualizarGrafico(asignaturasLibres, tablemodel2);
 				desactivarBoton(asignaturasPropias, Aplicar);
 				desactivarBoton(asignaturasLibres, Aplicar2);
 			}
@@ -219,21 +240,23 @@ public class ActualizarProfesor extends JFrame {
 		Aplicar.setToolTipText("");
 		Aplicar.setBounds(520, 562, 85, 21);
 		contentPane.add(Aplicar);
-		
+
 		Aplicar2 = new JButton("Aplicar");
 		Aplicar2.setToolTipText("");
 		Aplicar2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				asignaturasPropias.add(asignaturasLibres.get(filaSeleccionada));
 				asignaturasLibres.remove(filaSeleccionada);
-				actualizarGrafico(asignaturasLibres,tablemodel2);
-				actualizarGrafico(asignaturasPropias,tablemodel);
+				actualizarGrafico(asignaturasLibres, tablemodel2);
+				actualizarGrafico(asignaturasPropias, tablemodel);
 				desactivarBoton(asignaturasPropias, Aplicar);
 				desactivarBoton(asignaturasLibres, Aplicar2);
 			}
 		});
 		Aplicar2.setBounds(825, 562, 85, 21);
 		contentPane.add(Aplicar2);
+		desactivarBoton(asignaturasPropias, Aplicar);
+		desactivarBoton(asignaturasLibres, Aplicar2);
 		setVisible(true);
 	}
 }

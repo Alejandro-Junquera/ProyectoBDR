@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.management.modelmbean.ModelMBeanAttributeInfo;
 import javax.swing.AbstractListModel;
 import javax.swing.JComboBox;
@@ -34,7 +35,7 @@ public class InsertarProfesor extends JFrame {
 	private JTextField textContr;
 	private static ArrayList<Asignatura> asignaturasLibres;
 	public static ArrayList<Asignatura> asignaturaAsig;
-	private String relativa;
+	private String relativa=".\\Imagenes\\Fotos\\defecto.png";
 	private JTable tableAsig;
 	private JTable tableAsigEli;
 	private static DefaultTableModel tablemodel;
@@ -61,6 +62,13 @@ public class InsertarProfesor extends JFrame {
 			boton.setEnabled(false);
 		}else {
 			boton.setEnabled(true);
+		}
+	}
+	public boolean combrobarCamposVacios(JTextField textDNI,JTextField textNombre,JTextField textApell,JTextField textEmail,JTextField textContr) {
+		if(!textDNI.getText().isEmpty() && !textNombre.getText().isEmpty() && !textApell.getText().isEmpty() && !textEmail.getText().isEmpty() && !textContr.getText().isEmpty()) {
+			return true;
+		}else {
+			return false;
 		}
 	}
 	public InsertarProfesor(Connection conn) {
@@ -146,9 +154,19 @@ public class InsertarProfesor extends JFrame {
 		JButton btnAadir = new JButton("Añadir");
 		btnAadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				OperacionesBD.insertarProfesor(textDNI.getText(),textNombre.getText(),textApell.getText(),textEmail.getText(),textContr.getText(),relativa,asignaturaAsig,conn);
-				new AdminProfesor(conn);
-				dispose();
+				if(combrobarCamposVacios(textDNI, textNombre, textApell, textEmail, textContr)) {
+					if(asignaturaAsig.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "No se puede añadir profesor sin asignaturas");
+					}else {
+						OperacionesBD.insertarProfesor(textDNI.getText(),textNombre.getText(),textApell.getText(),textEmail.getText(),textContr.getText(),relativa,asignaturaAsig,conn);
+						new AdminProfesor(conn);
+						dispose();
+						JOptionPane.showMessageDialog(null, "Profesor añadido correctamente");
+					}
+				}else {
+					JOptionPane.showMessageDialog(null, "No puede haber campos vacios");
+				}
+				
 			}
 		});
 		btnAadir.setBounds(258, 663, 121, 40);
@@ -223,6 +241,8 @@ public class InsertarProfesor extends JFrame {
 		});
 		Aplicar2.setBounds(825, 562, 85, 21);
 		contentPane.add(Aplicar2);
+		desactivarBoton(asignaturasLibres, Aplicar);
+		desactivarBoton(asignaturaAsig, Aplicar2);
 		setVisible(true);
 	}
 }
