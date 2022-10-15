@@ -160,7 +160,7 @@ public class AlumnoInfo extends JFrame {
 		btnConsultarNotas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				NotasAlumno n=new NotasAlumno(asignaturas.get(filaSelecionada).getId(),
-						asignaturas.get(filaSelecionada).getNombre(),dniAlumno,nombre, rasAsig);
+						asignaturas.get(filaSelecionada).getNombre(),dniAlumno,nombre, rasAsig, conn);
 				//dispose();
 			}
 		});

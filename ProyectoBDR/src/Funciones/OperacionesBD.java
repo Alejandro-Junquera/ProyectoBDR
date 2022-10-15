@@ -264,4 +264,41 @@ public class OperacionesBD {
 		
 		return res;
 	}
+	
+	public static float extraerNotaRaAlumno(Connection conn, String dniAlumno, int idRA) {
+		float res=0;
+		String sql="select * from califica where (id_ra=? and dni_alu=?);";
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			statement.setInt(1,idRA);
+			statement.setString(2,dniAlumno);
+			ResultSet rs=statement.executeQuery();
+			while(rs.next()) {
+				res=rs.getFloat("nota");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return res;
+	}
+	
+	public static Profesor extraerProfesorAsignatura(Connection conn, int idAsig) {
+		Profesor p=new Profesor();
+		String sql="select * from profesor where dni=(select dni_pro from asignatura where id=?);";
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			statement.setInt(1,idAsig);
+			ResultSet rs=statement.executeQuery();
+			while(rs.next()) {
+				p=new Profesor(rs.getString("dni"),rs.getString("nombre"),rs.getString("apellidos"),
+						rs.getString("clave"),rs.getString("img"),rs.getString("email"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return p;
+	}
 }
