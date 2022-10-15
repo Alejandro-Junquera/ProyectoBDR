@@ -62,6 +62,9 @@ public class AdminSeleccion extends JFrame {
 		JButton btnAdministrarAsignaturas = new JButton("Administrar Asignaturas");
 		btnAdministrarAsignaturas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				AdminAsignatura AA=new AdminAsignatura(conn);
+				AA.setVisible(true);
+				dispose();
 			}
 		});
 		btnAdministrarAsignaturas.setFont(new Font("Tahoma", Font.PLAIN, 18));

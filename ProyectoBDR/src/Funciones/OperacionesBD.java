@@ -139,8 +139,22 @@ public class OperacionesBD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
+	
+	public static void borrarDNIProfAsignatura(int idAsig,Connection conn) {
+		String sql="update asignatura set dni_pro=? where id=?;";
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			statement.setString(1,null);
+			statement.setString(2,null);
+			int rs=statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public static void borrarProfesor(String dni,Connection conn) {
 		String sql="delete from profesor where dni=?;";
 		try {
@@ -230,6 +244,26 @@ public class OperacionesBD {
 		return alum;
     }
 	
+	public static void insertarAsignatura(String nombre,String horasSemanales,Connection conn){
+        PreparedStatement ps;
+        String sql;
+        Asignatura asig = new Asignatura();
+        asig.setNombre(nombre);
+        asig.setHorasSemanales(Integer.parseInt(horasSemanales));
+        try{
+            sql = "insert into asignatura(nombre, horasSemanales, dni_pro) values(?,?,?)";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, asig.getNombre());
+            ps.setInt(2, asig.getHorasSemanales());
+            ps.setObject(3, null);
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Se han insertado los datos");
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
+        }
+    }
+	
+	
 	public static void BorrarAlumno(String dni,Connection conn){
 
 		String consulta= "delete from alumno where dni = ?;";
@@ -243,6 +277,44 @@ public class OperacionesBD {
 			;
 		}
 
+	}
+	//Incluye el borrado de los RA de dicha asignatura y la entrada de la tabla matriculacion 
+	public static void borrarAsignatura(int idAsig,Connection conn){
+		borrarRAsAsignatura(idAsig,conn);
+		borrarMatriculasAsignatura(idAsig,conn);
+		
+		String consulta= "delete from asignatura where id = ?;";
+		try {
+			PreparedStatement statement = conn.prepareStatement(consulta);
+			statement.setInt(1, idAsig);
+			int rs=statement.executeUpdate();
+			JOptionPane.showMessageDialog(null, "Se han eliminado la asignatura correctamente");
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getErrorCode());
+			;
+		}
+	}
+	public static void borrarRAsAsignatura(int idAsig,Connection conn) {
+		String sql="delete from ra where id_asi=?;";
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			statement.setInt(1,idAsig);
+			int rs=statement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public static void borrarMatriculasAsignatura(int idAsig,Connection conn) {
+		String sql="delete from matricula where id_asi=?;";
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			statement.setInt(1,idAsig);
+			int rs=statement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static ArrayList<RA> extraerRAsAsig(Connection conn, int idAsig){
