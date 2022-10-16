@@ -199,6 +199,55 @@ public class OperacionesBD {
 		}
 		
 	}
+	
+	public static void actualizarAsignatura(String nombre,int horasSemanales,int idAsig,Connection conn) {
+		String sql="update asignatura set nombre=? where id=?;";
+		String sql2="update asignatura set horasSemanales=? where id=?;";
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			PreparedStatement statement2=conn.prepareStatement(sql2);
+			statement.setString(1,nombre);
+			statement.setInt(2,idAsig);
+			statement2.setInt(1,horasSemanales);
+			statement2.setInt(2,idAsig);
+			int rs=statement.executeUpdate();
+			int rs2=statement2.executeUpdate();
+			statement.close();
+			statement2.close();
+			JOptionPane.showMessageDialog(null, "Se han actualizado la asignatura correctamente");
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getErrorCode());
+		}
+		
+	}
+	
+	public static void actualizarRA(String nombre,String descripcion,int ponderacion, int idRA,Connection conn) {
+		String sql="update ra set nombre=? where id=?;";
+		String sql2="update ra set descripcion=? where id=?;";
+		String sql3="update ra set ponderacion=? where id=?;";
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			PreparedStatement statement2=conn.prepareStatement(sql2);
+			PreparedStatement statement3=conn.prepareStatement(sql3);
+			statement.setString(1,nombre);
+			statement.setInt(2,idRA);
+			statement2.setString(1,descripcion);
+			statement2.setInt(2,idRA);
+			statement3.setInt(1,ponderacion);
+			statement3.setInt(1,idRA);
+			int rs=statement.executeUpdate();
+			int rs2=statement2.executeUpdate();
+			statement.close();
+			statement2.close();
+			JOptionPane.showMessageDialog(null, "Se han actualizado la asignatura correctamente");
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getErrorCode());
+		}
+		
+	}
+	
 	public static ArrayList<Alumno> ExtraccionTablaAlumno(Connection conn) {
 		String sql="select dni,nombre,apellidos,fecha_nacimiento,telefono,clave,img from alumno;";
 		ArrayList<Alumno> alumnos=new ArrayList<>();
@@ -251,11 +300,10 @@ public class OperacionesBD {
         asig.setNombre(nombre);
         asig.setHorasSemanales(Integer.parseInt(horasSemanales));
         try{
-            sql = "insert into asignatura(nombre, horasSemanales, dni_pro) values(?,?,?)";
+            sql = "insert into asignatura(nombre, horasSemanales) values(?,?)";
             ps = conn.prepareStatement(sql);
             ps.setString(1, asig.getNombre());
             ps.setInt(2, asig.getHorasSemanales());
-            ps.setObject(3, null);
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Se han insertado los datos");
         }catch(SQLException e){
@@ -263,6 +311,27 @@ public class OperacionesBD {
         }
     }
 	
+	public static void insertarRA(String nombre,String descripcion,String ponderacion, int idAsig,Connection conn){
+        PreparedStatement ps;
+        String sql;
+        RA ra = new RA();
+        ra.setNombre(nombre);
+        ra.setDescripcion(descripcion);
+        ra.setPonderacion(Integer.parseInt(ponderacion));
+        ra.setId_asi(idAsig);
+        try{
+            sql = "insert into ra(nombre, descripcion, ponderacion, id_asi) values(?,?,?,?)";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, ra.getNombre());
+            ps.setString(2, ra.getDescripcion());
+            ps.setInt(3, ra.getPonderacion());
+            ps.setInt(4, ra.getId_asi());
+            int rs=ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Se han insertado los datos");
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
+        }
+    }
 	
 	public static void BorrarAlumno(String dni,Connection conn){
 
@@ -291,7 +360,6 @@ public class OperacionesBD {
 			JOptionPane.showMessageDialog(null, "Se han eliminado la asignatura correctamente");
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getErrorCode());
-			;
 		}
 	}
 	public static void borrarRAsAsignatura(int idAsig,Connection conn) {
@@ -299,6 +367,17 @@ public class OperacionesBD {
 		try {
 			PreparedStatement statement=conn.prepareStatement(sql);
 			statement.setInt(1,idAsig);
+			int rs=statement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public static void borrarRA(int idRA,Connection conn) {
+		String sql="delete from ra where id=?;";
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			statement.setInt(1,idRA);
 			int rs=statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

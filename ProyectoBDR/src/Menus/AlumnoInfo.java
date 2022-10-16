@@ -26,6 +26,7 @@ import Funciones.RA;
 import Funciones.insertarImagenes;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
@@ -45,7 +46,7 @@ public class AlumnoInfo extends JFrame {
 	private String relativa;
 	private static ArrayList<Asignatura> asignaturas=new ArrayList<Asignatura>();
 	private JTable table;
-	private int filaSelecionada;
+	private Integer filaSeleccionada;
 	private ArrayList<RA> rasAsig;
 
 	public AlumnoInfo(Connection conn, String dniAlumno) {
@@ -146,8 +147,8 @@ public class AlumnoInfo extends JFrame {
 		table = new JTable(modeloAsig);
 		table.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				filaSelecionada = table.rowAtPoint(evt.getPoint());
-				rasAsig=OperacionesBD.extraerRAsAsig(conn, asignaturas.get(filaSelecionada).getId());
+				filaSeleccionada = table.rowAtPoint(evt.getPoint());
+				rasAsig=OperacionesBD.extraerRAsAsig(conn, asignaturas.get(filaSeleccionada).getId());
 			}
 		});
 		
@@ -159,9 +160,13 @@ public class AlumnoInfo extends JFrame {
 		contentPane.add(btnConsultarNotas);
 		btnConsultarNotas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				NotasAlumno n=new NotasAlumno(asignaturas.get(filaSelecionada).getId(),
-						asignaturas.get(filaSelecionada).getNombre(),dniAlumno,nombre, rasAsig, conn);
+				if(filaSeleccionada==null) {
+					JOptionPane.showMessageDialog(null, "Selecciona una asignatura");
+				}else {
+				NotasAlumno n=new NotasAlumno(asignaturas.get(filaSeleccionada).getId(),
+						asignaturas.get(filaSeleccionada).getNombre(),dniAlumno,nombre, rasAsig, conn);
 				//dispose();
+				}
 			}
 		});
 	}

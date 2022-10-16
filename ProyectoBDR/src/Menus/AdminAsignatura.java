@@ -19,6 +19,8 @@ import Funciones.OperacionesBD;
 import Funciones.Profesor;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 
 public class AdminAsignatura extends JFrame {
@@ -26,7 +28,7 @@ public class AdminAsignatura extends JFrame {
 	private JPanel contentPane;
 	private static DefaultTableModel modelo;
 	private static  ArrayList<Profesor> profesores=new ArrayList<>();
-	private int filaSelecionada;
+	private Integer filaSeleccionada;
 	private JButton btnInsertar;
 	private JTable tablaAsignaturas;
 	private static ArrayList<Asignatura> asignaturas=new ArrayList<Asignatura>();
@@ -56,8 +58,9 @@ public class AdminAsignatura extends JFrame {
 		JButton btnInsertar = new JButton("Insertar");
 		btnInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InsertarAsignatura ia = new InsertarAsignatura();
+				InsertarAsignatura ia = new InsertarAsignatura(conn);
 				ia.setVisible(true);
+				dispose();
 			}
 		});
 		btnInsertar.setBounds(76, 427, 120, 23);
@@ -66,6 +69,14 @@ public class AdminAsignatura extends JFrame {
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(filaSeleccionada==null) {
+					JOptionPane.showMessageDialog(null, "Selecciona una asignatura");
+				}else {
+					ActualizarAsignatura AA= new ActualizarAsignatura(conn,asignaturas.get(filaSeleccionada).getId(),
+							asignaturas.get(filaSeleccionada).getNombre(),asignaturas.get(filaSeleccionada).getHorasSemanales());
+					dispose();
+					AA.setVisible(true);
+				}
 				
 			}
 		});
@@ -75,20 +86,31 @@ public class AdminAsignatura extends JFrame {
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Conexion con = new Conexion();
-				OperacionesBD.borrarDNIProfAsignatura(filaSelecionada,con.conectarMySQL());
-				OperacionesBD.borrarAsignatura(asignaturas.get(filaSelecionada).getId(), con.conectarMySQL());
-				asignaturas=OperacionesBD.ExtraccionTodasAsignaturas(conn);
-				actualizarTablaAsig();
+				if(filaSeleccionada==null) {
+					JOptionPane.showMessageDialog(null, "Selecciona una asignatura");
+				}else {
+					Conexion con = new Conexion();
+					OperacionesBD.borrarDNIProfAsignatura(filaSeleccionada,con.conectarMySQL());
+					OperacionesBD.borrarAsignatura(asignaturas.get(filaSeleccionada).getId(), con.conectarMySQL());
+					asignaturas=OperacionesBD.ExtraccionTodasAsignaturas(conn);
+					actualizarTablaAsig();
+				}
 			}
 		});
 	
 		btnEliminar.setBounds(366, 427, 120, 23);
 		contentPane.add(btnEliminar);
 		
-		JButton btnMostrarRAs = new JButton("Mostrar RAs");
-		btnMostrarRAs.setBounds(532, 427, 120, 23);
-		contentPane.add(btnMostrarRAs);
+		JButton btnEditarRAs = new JButton("Editar RAs");
+		btnEditarRAs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EditarRAs ER = new EditarRAs(asignaturas.get(filaSeleccionada).getId(),asignaturas.get(filaSeleccionada).getNombre(), conn);
+				dispose();
+				ER.setVisible(true);
+			}
+		});
+		btnEditarRAs.setBounds(532, 427, 120, 23);
+		contentPane.add(btnEditarRAs);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(45, 160, 653, 176);
@@ -104,7 +126,7 @@ public class AdminAsignatura extends JFrame {
 		actualizarTablaAsig();
 		tablaAsignaturas.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				filaSelecionada = tablaAsignaturas.rowAtPoint(evt.getPoint());
+				filaSeleccionada = tablaAsignaturas.rowAtPoint(evt.getPoint());
 			}
 		});
 		

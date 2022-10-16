@@ -24,7 +24,7 @@ public class InsertarAsignatura extends JFrame {
 	private JTextField textHorasSemanales;
 
 	
-	public InsertarAsignatura() {
+	public InsertarAsignatura(Connection conn) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 400, 400);
 		contentPane = new JPanel();
@@ -39,6 +39,8 @@ public class InsertarAsignatura extends JFrame {
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
+				AdminAsignatura AA = new AdminAsignatura(conn);
+				AA.setVisible(true);
 			}
 		});
 		btnCancelar.setBounds(218, 288, 89, 23);
@@ -67,9 +69,11 @@ public class InsertarAsignatura extends JFrame {
 		JButton btnInsertar = new JButton("Insertar");
 		btnInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Conexion conn = new Conexion();
-				OperacionesBD.insertarAsignatura(textNombre.getText(),textHorasSemanales.getText(),conn.conectarMySQL());
+				Conexion con = new Conexion();
+				OperacionesBD.insertarAsignatura(textNombre.getText(),textHorasSemanales.getText(),con.conectarMySQL());
 				dispose();
+				AdminAsignatura aa=new AdminAsignatura(conn);
+				aa.setVisible(true);
 			}
 		});
 		btnInsertar.setBounds(69, 288, 89, 23);
