@@ -28,6 +28,7 @@ public class AdminSeleccion extends JFrame {
 		JButton btnNewButton = new JButton("Administrar Alumnos");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dispose();
 				VistaAlumnos va= new VistaAlumnos();
 				va.setVisible(true);
 			}

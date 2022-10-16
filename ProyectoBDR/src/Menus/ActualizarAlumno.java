@@ -19,7 +19,7 @@ import java.io.File;
 import java.awt.event.ActionEvent;
  
 
-public class InsertarAlumno extends JFrame  {
+public class ActualizarAlumno extends JFrame  {
 
 	private JPanel contentPane;
 	private JTextField textNombre;
@@ -33,8 +33,8 @@ public class InsertarAlumno extends JFrame  {
 	private Image img;
 
 
-	public InsertarAlumno() {
-		setTitle("Insertar alumno");
+	public ActualizarAlumno() {
+		setTitle("Actualizar alumno");
 		setBounds(100, 100, 1080, 561);
 		contentPane = new JPanel();
 		Dimension pantallaTamano = Toolkit.getDefaultToolkit().getScreenSize();
@@ -46,7 +46,6 @@ public class InsertarAlumno extends JFrame  {
 	private void componentes() {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
-
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
@@ -78,7 +77,9 @@ public class InsertarAlumno extends JFrame  {
 		textDNI = new JTextField();
 		textDNI.setColumns(10);
 		textDNI.setBounds(314, 42, 253, 40);
+		textDNI.setEditable(false);
 		contentPane.add(textDNI);
+		
 		
 		JButton btnAniadir = new JButton("Añadir");
 		btnAniadir.addActionListener(new ActionListener() {
@@ -98,7 +99,7 @@ public class InsertarAlumno extends JFrame  {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				VistaAlumnos va= new VistaAlumnos();
+				VistaAlumnos va = new VistaAlumnos();
 				va.setVisible(true);
 			}
 		});

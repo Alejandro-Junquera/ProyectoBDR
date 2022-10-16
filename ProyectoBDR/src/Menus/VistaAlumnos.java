@@ -10,8 +10,12 @@ import Funciones.OperacionesBD;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Toolkit;
+
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import java.awt.event.ActionListener;
@@ -40,9 +44,12 @@ public class VistaAlumnos extends JFrame {
 	
 	
 	public VistaAlumnos() {
+		setTitle("Administrador de alumnos");
 		setBounds(100, 100, 769, 536);
 		Conexion conn = new Conexion();
 		this.alumnos=OperacionesBD.ExtraccionTablaAlumno(conn.conectarMySQL());
+		Dimension pantallaTamano = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation((pantallaTamano.width/2)-(this.getWidth()/2), (pantallaTamano.height/2)-(this.getHeight()/2));
 		componentes();
 	}
 	
@@ -85,6 +92,9 @@ public class VistaAlumnos extends JFrame {
 		btnVolverAdmin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
+				Conexion conn = new Conexion();
+				AdminSeleccion as = new AdminSeleccion(conn.conectarMySQL());
+				as.setVisible(true);
 			}
 		});
 		btnVolverAdmin.setBounds(48, 30, 85, 21);
@@ -92,10 +102,10 @@ public class VistaAlumnos extends JFrame {
 		
 		lblTitulo = new JLabel("Administrar alumnos");
 		lblTitulo.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		lblTitulo.setBounds(261, 53, 178, 48);
+		lblTitulo.setBounds(289, 58, 178, 48);
 		panel.add(lblTitulo);
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(67, 247, 616, 150);
+		scrollPane.setBounds(10, 106, 735, 150);
 		
 		panel.add(scrollPane);
 		
@@ -104,7 +114,6 @@ public class VistaAlumnos extends JFrame {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				filaSeleccionada = tablaAlumnos.rowAtPoint(evt.getPoint());
 				lblFotoAlumno.setText(String.valueOf(alumnos.get(filaSeleccionada).getImg()));
-				System.out.println(String.valueOf(alumnos.get(filaSeleccionada).getImg()));
 				img=getToolkit().getImage(String.valueOf(lblFotoAlumno.getText()));
 				img=img.getScaledInstance(lblFotoAlumno.getWidth(), lblFotoAlumno.getHeight(),Image.SCALE_DEFAULT);
 				lblFotoAlumno.setIcon(new ImageIcon(img));
@@ -132,12 +141,20 @@ public class VistaAlumnos extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				InsertarAlumno ia = new InsertarAlumno();
+				ia.setVisible(true);
 			}
 		});
 		btnInsertarAlumno.setBounds(67, 422, 121, 40);
 		panel.add(btnInsertarAlumno);
 		
 		btnActualizarAlumno = new JButton("Actualizar");
+		btnActualizarAlumno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				ActualizarAlumno aa = new ActualizarAlumno();
+				aa.setVisible(true);
+			}
+		});
 		btnActualizarAlumno.setBounds(224, 422, 121, 40);
 		panel.add(btnActualizarAlumno);
 		
@@ -163,7 +180,7 @@ public class VistaAlumnos extends JFrame {
 		panel.add(btnMostrarNotas);
 		
 		lblFotoAlumno = new JLabel("");
-		lblFotoAlumno.setBounds(540, 103, 128, 119);
+		lblFotoAlumno.setBounds(289, 278, 128, 119);
 		panel.add(lblFotoAlumno);
 	}
 }
