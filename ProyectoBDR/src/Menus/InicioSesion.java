@@ -82,9 +82,13 @@ public class InicioSesion extends JFrame {
 				}else if(ComprobarUsuario.comprobarAlumno(textUsuario.getText(),textContrasenia.getText(), conn)) {
 					//Instancia de alumno
 					AlumnoInfo al = new AlumnoInfo(conn, textUsuario.getText());
+					al.setVisible(true);
 					setVisible(false);
 				}else if(ComprobarUsuario.comprobarProfesor(textUsuario.getText(),textContrasenia.getText(), conn)) {
 					//Instancia de profesor
+					ProfesorInfo p = new ProfesorInfo(conn, textUsuario.getText());
+					p.setVisible(true);
+					setVisible(false);
 				}else {
 					System.out.println("Usuario o contraseña erroneo");
 				}

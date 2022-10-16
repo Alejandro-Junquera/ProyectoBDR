@@ -63,9 +63,7 @@ public class EditarRAs extends JFrame {
 		JButton btnNewButton = new JButton("Cerrar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AdminAsignatura AA = new AdminAsignatura(conn);
 				dispose();
-				AA.setVisible(true);
 			}
 		});
 		contentPane.setLayout(null);
@@ -82,7 +80,6 @@ public class EditarRAs extends JFrame {
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
 				ActualizarRA AR = new ActualizarRA(conn,rasAsig.get(filaSeleccionada).getId(),
 						rasAsig.get(filaSeleccionada).getNombre(),rasAsig.get(filaSeleccionada).getDescripcion(),
 						Integer.valueOf(rasAsig.get(filaSeleccionada).getPonderacion()));
@@ -114,7 +111,6 @@ public class EditarRAs extends JFrame {
 		btnInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				InsertarRA IA = new InsertarRA(idAsig,nombreAsig,conn);
-				dispose();
 				IA.setVisible(true);
 			}
 		});

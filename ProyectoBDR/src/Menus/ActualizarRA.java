@@ -45,8 +45,6 @@ public class ActualizarRA extends JFrame {
 					OperacionesBD.actualizarRA(textNombre.getText(),textDescripcion.getText(),
 					Integer.valueOf(textPonderacion.getText()),idRA,conn);
 					dispose();
-					AdminAsignatura aa=new AdminAsignatura(conn);
-					aa.setVisible(true);
 				}
 				
 			}

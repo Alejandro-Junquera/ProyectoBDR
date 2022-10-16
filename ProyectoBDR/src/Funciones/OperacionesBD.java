@@ -264,6 +264,24 @@ public class OperacionesBD {
 		return alumnos;
 		
 	}
+	
+	public static ArrayList<Alumno> ExtraccionTablaAlumnoAsig(Connection conn, int idAsig) {
+		String sql="select dni,nombre,apellidos,fecha_nacimiento,telefono,clave,img from alumno where dni in (select dni_alu from matricula where id_asi=?);";
+		ArrayList<Alumno> alumnos=new ArrayList<>();
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			statement.setInt(1, idAsig);
+			ResultSet rs=statement.executeQuery();
+			while(rs.next()) {
+				alumnos.add(new Alumno(rs.getString("dni"),rs.getString("nombre"),rs.getString("apellidos"),rs.getString("fecha_nacimiento"),rs.getInt("telefono"),rs.getString("clave"),rs.getString("img")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return alumnos;
+		
+	}
 	public static Alumno insertarAlumno(String dni, String nombre, String apellidos,String fNacimiento , int telefono,String clave, String foto, Connection conn){
         PreparedStatement ps;
         String sql;
@@ -375,6 +393,18 @@ public class OperacionesBD {
 	}
 	public static void borrarRA(int idRA,Connection conn) {
 		String sql="delete from ra where id=?;";
+		borrarCalificacionesRA(idRA,conn);
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			statement.setInt(1,idRA);
+			int rs=statement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public static void borrarCalificacionesRA(int idRA, Connection conn) {
+		String sql="delete from califica where id_ra=?;";
 		try {
 			PreparedStatement statement=conn.prepareStatement(sql);
 			statement.setInt(1,idRA);
@@ -426,6 +456,7 @@ public class OperacionesBD {
 			ResultSet rs=statement.executeQuery();
 			while(rs.next()) {
 				res=rs.getFloat("nota");
+				System.out.println(res);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

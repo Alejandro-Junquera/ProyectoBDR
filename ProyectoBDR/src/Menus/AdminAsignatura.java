@@ -105,7 +105,7 @@ public class AdminAsignatura extends JFrame {
 		btnEditarRAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EditarRAs ER = new EditarRAs(asignaturas.get(filaSeleccionada).getId(),asignaturas.get(filaSeleccionada).getNombre(), conn);
-				dispose();
+				
 				ER.setVisible(true);
 			}
 		});
