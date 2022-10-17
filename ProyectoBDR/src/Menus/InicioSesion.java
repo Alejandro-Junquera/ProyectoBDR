@@ -2,6 +2,7 @@ package Menus;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 
@@ -16,14 +17,18 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import Funciones.ComprobarUsuario;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import Funciones.insertarImagenes;
 
 public class InicioSesion extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textUsuario;
-	private JTextField textContrasenia;
+	private JPasswordField textContrasenia;
 	private Conexion connbd;
 	private Connection conn;
+	private JLabel lblVer,lblOcultar;
 
 	public static void main(String[] args) {
 		try {
@@ -49,25 +54,12 @@ public class InicioSesion extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblUsuario = new JLabel("DNI");
-		lblUsuario.setForeground(Color.WHITE);
-		lblUsuario.setForeground(new Color(0, 0, 0));
-		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblUsuario.setBounds(70, 178, 109, 25);
-		contentPane.add(lblUsuario);
-		
-		JLabel lblContrasenia = new JLabel("Contraseña");
-		lblContrasenia.setForeground(new Color(0, 0, 0));
-		lblContrasenia.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblContrasenia.setBounds(70, 291, 109, 25);
-		contentPane.add(lblContrasenia);
-		
 		textUsuario = new JTextField();
 		textUsuario.setBounds(189, 173, 253, 40);
 		contentPane.add(textUsuario);
 		textUsuario.setColumns(10);
 		
-		textContrasenia = new JTextField();
+		textContrasenia = new JPasswordField();
 		textContrasenia.setBounds(189, 286, 253, 40);
 		contentPane.add(textContrasenia);
 		textContrasenia.setColumns(10);
@@ -117,11 +109,54 @@ public class InicioSesion extends JFrame {
 		btnRegistro.setBounds(335, 350, 107, 21);
 		contentPane.add(btnRegistro);
 		
-		JLabel lblFondo = new JLabel("");
+		lblVer = new JLabel("");
+		lblVer.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				lblVer.setVisible(false);
+				lblOcultar.setVisible(true);
+				textContrasenia.setEchoChar((char)0);
+			}
+		});
+		lblVer.setBounds(452, 291, 45, 34);
+		lblVer.setIcon(insertarImagenes.ResizableImage("Imagenes/Iconos/ver.png", lblVer));
+		contentPane.add(lblVer);
+		
+		lblOcultar = new JLabel("");
+		lblOcultar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				lblVer.setVisible(true);
+				lblOcultar.setVisible(false);
+				textContrasenia.setEchoChar('*');
+			}
+		});
+		lblOcultar.setBounds(452, 291, 45, 34);
+		lblOcultar.setIcon(insertarImagenes.ResizableImage("Imagenes/Iconos/ocultar.png", lblOcultar));
+		contentPane.add(lblOcultar);
+		
+		JLabel lblimgDNI = new JLabel("");
+		lblimgDNI.setBounds(94, 173, 45, 34);
+		lblimgDNI.setIcon(insertarImagenes.ResizableImage("Imagenes/Iconos/carnet-de-identidad.png", lblimgDNI));
+		contentPane.add(lblimgDNI);
+		
+		JLabel lblimgCont = new JLabel("");
+		lblimgCont.setBounds(94, 286, 45, 34);
+		lblimgCont.setIcon(insertarImagenes.ResizableImage("Imagenes/Iconos/bloquear.png", lblimgCont));
+		contentPane.add(lblimgCont);
+		
+		JLabel lblNewLabel = new JLabel("Iniciar Sesión");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		lblNewLabel.setBounds(192, 53, 183, 51);
+		contentPane.add(lblNewLabel);
+		lblOcultar.setVisible(false);
+		
+		
+		/*JLabel lblFondo = new JLabel("");
 		lblFondo.setBounds(0, 0, 536, 613);
 		lblFondo.setIcon(new ImageIcon("Imagenes/Iconos/fondo.jpg"));
 		lblFondo.setIcon(new ImageIcon("Imagenes/Iconos/salesianos.jpg"));
-		contentPane.add(lblFondo);
+		contentPane.add(lblFondo);*/
 		setVisible(true);
 	}
 }
