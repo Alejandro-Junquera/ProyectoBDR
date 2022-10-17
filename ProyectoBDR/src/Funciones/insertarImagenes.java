@@ -2,7 +2,10 @@ package Funciones;
 
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -25,14 +28,19 @@ public class insertarImagenes {
 		FileNameExtensionFilter soloImg = new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png", "jpeg");
 		fileChooser.setFileFilter(soloImg);
 		fileChooser.showSaveDialog(null);
-		relativa=".\\";
+		relativa=".\\Imagenes\\Fotos\\";
 		if (fileChooser.getSelectedFile() != null) {
 			File selectedFile = fileChooser.getSelectedFile();
 			String path = selectedFile.getAbsolutePath();
+			File Rutarelativa=new File(".\\Imagenes\\Fotos\\"+selectedFile.getName());
 			
-			for (int i = path.indexOf("Imagenes"); i < path.length(); i++) {
-				relativa += path.charAt(i);
+			try {
+				Files.copy(Paths.get(selectedFile.getAbsolutePath()), Paths.get(Rutarelativa.getPath()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			relativa+=selectedFile.getName();
 			imgLabel.setIcon(ResizableImage(relativa, imgLabel));
 			return relativa;
 		}

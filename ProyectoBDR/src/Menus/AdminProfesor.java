@@ -17,6 +17,10 @@ import Funciones.Profesor;
 import Funciones.Asignatura;
 import Funciones.OperacionesBD;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.awt.event.ActionEvent;
 
 public class AdminProfesor extends JFrame {
@@ -109,9 +113,20 @@ public class AdminProfesor extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int op=JOptionPane.showConfirmDialog(null, "¿Seguro que deseas eliminar al profesor?");
 				if(op==0) {
+				File eliminar=new File(profesores.get(filaSelecionada).getImg());
 				OperacionesBD.borrarDNIProfAsignatura(profesores.get(filaSelecionada).getDNI(), conn);
 				OperacionesBD.borrarProfesor(profesores.get(filaSelecionada).getDNI(), conn);
 				profesores=OperacionesBD.ExtraccionTablaProfesor(conn);
+				try {
+					if(!profesores.get(filaSelecionada).getImg().equals("\\Imagenes\\Fotos\\defecto.png")) {
+						Files.delete(Paths.get(eliminar.getPath()));
+					}
+					
+				} catch (IOException e1) {
+					
+				}catch(java.lang.IndexOutOfBoundsException e2) {
+					
+				}
 				actualizarGrafico();
 				}
 				
