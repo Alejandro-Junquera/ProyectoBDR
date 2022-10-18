@@ -26,7 +26,8 @@ public class InsertarAlumno extends JFrame  {
 	private JTextField textTelefono;
 	private JTextField textFecha;
 	private JLabel lblFoto;
-	protected String relativaFoto;
+	protected insertarImagenes ii= new insertarImagenes();
+
 
 
 	public InsertarAlumno() {
@@ -80,8 +81,7 @@ public class InsertarAlumno extends JFrame  {
 		btnAniadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Conexion conn = new Conexion();
-				System.out.println(lblFoto.getText());
-				Funciones.OperacionesBD.insertarAlumno(textDNI.getText(), textNombre.getText(),textApellidos.getText(),textFecha.getText(),Integer.parseInt(textTelefono.getText()),textContrasenia.getText(),relativaFoto,conn.conectarMySQL());
+				Funciones.OperacionesBD.insertarAlumno(textDNI.getText(), textNombre.getText(),textApellidos.getText(),textFecha.getText(),Integer.parseInt(textTelefono.getText()),textContrasenia.getText(),lblFoto.getText(),conn.conectarMySQL());
 				dispose();
 				VistaAlumnos va= new VistaAlumnos();
 				va.setVisible(true);
@@ -105,13 +105,15 @@ public class InsertarAlumno extends JFrame  {
 		
 		lblFoto = new JLabel("");
 		lblFoto.setBounds(691, 93, 152, 190);
+		lblFoto.setText(".\\Imagenes\\Fotos\\defecto.jfif");
+		lblFoto.setIcon(ii.ResizableImage(lblFoto.getText(), lblFoto));
 		contentPane.add(lblFoto);
 		
 		JButton btnAadirImagen = new JButton("Añadir Imagen");
 		btnAadirImagen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				insertarImagenes ii = new insertarImagenes();
-				relativaFoto=ii.generarRutaImg(relativaFoto, lblFoto);
+				ii = new insertarImagenes();
+				lblFoto.setText(ii.generarRutaImg(lblFoto.getText(), lblFoto));
 			}
 		});
 		btnAadirImagen.setFont(new Font("Tahoma", Font.PLAIN, 14));

@@ -115,6 +115,7 @@ public class VistaAlumnos extends JFrame {
 				lblFotoAlumno.setText(String.valueOf(alumnos.get(filaSeleccionada).getImg()));
 				img=getToolkit().getImage(String.valueOf(lblFotoAlumno.getText()));
 				img=img.getScaledInstance(lblFotoAlumno.getWidth(), lblFotoAlumno.getHeight(),Image.SCALE_DEFAULT);
+				lblFotoAlumno.setText(alumnos.get(filaSeleccionada).getImg());
 				lblFotoAlumno.setIcon(new ImageIcon(img));
 			}
 		});
@@ -164,20 +165,22 @@ public class VistaAlumnos extends JFrame {
 				Conexion conn = new Conexion();
 				int op=JOptionPane.showConfirmDialog(null, "¿Seguro que deseas eliminar el alumno seleccionado?");
 				if(op==0) {
-				limpiarFoto();
+				
 				File eliminar=new File(alumnos.get(filaSeleccionada).getImg());
-				OperacionesBD.BorrarAlumno(alumnos.get(filaSeleccionada).getDNI(), conn.conectarMySQL());
-				alumnos=OperacionesBD.ExtraccionTablaAlumno(conn.conectarMySQL());
+				
 				try {
-					if(!alumnos.get(filaSeleccionada).getImg().equals("\\Imagenes\\Fotos\\defecto.png")) {
+					if(!alumnos.get(filaSeleccionada).getImg().contains("defecto")) {
 						Files.delete(Paths.get(eliminar.getPath()));
 					}
+					OperacionesBD.BorrarAlumno(alumnos.get(filaSeleccionada).getDNI(), conn.conectarMySQL());
+					alumnos=OperacionesBD.ExtraccionTablaAlumno(conn.conectarMySQL());
 					
 				} catch (IOException e1) {
 					
 				}catch(java.lang.IndexOutOfBoundsException e2) {
 					
 				}
+				limpiarFoto();
 				llenarTabla();
 				}
 			}
