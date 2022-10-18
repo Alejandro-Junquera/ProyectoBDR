@@ -371,6 +371,21 @@ public class OperacionesBD {
         }
     }
 	
+	public static void CalificarAlumno(Connection conn, String dniAlu, int idRA, float nota) {
+		PreparedStatement ps;
+        String sql;
+        try {
+        	sql = "insert into califica values(?,?,?)";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, dniAlu);
+            ps.setInt(2, idRA);
+            ps.setFloat(3, nota);
+            ps.executeUpdate();
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
+        }
+	}
+	
 	public static void BorrarAlumno(String dni,Connection conn){
 
 		String consulta= "delete from alumno where dni = ?;";

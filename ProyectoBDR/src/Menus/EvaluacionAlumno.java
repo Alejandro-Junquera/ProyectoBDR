@@ -26,6 +26,7 @@ public class EvaluacionAlumno extends JFrame {
 	private JTable table;
 	private DefaultTableModel model;
 	private Object[] fila;
+	private int filaSeleccionada;
 
 	
 	public EvaluacionAlumno(Connection conn, String dniProf, String dniAlu,
@@ -66,6 +67,21 @@ public class EvaluacionAlumno extends JFrame {
 		table = new JTable(model);
 		scrollPane.setViewportView(table);
 		table.setModel(model);
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				filaSeleccionada = table.rowAtPoint(evt.getPoint());
+			}
+		});
+		JButton btnEvaluar = new JButton("Calificar");
+		btnEvaluar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				InsertarNota in = new InsertarNota(conn, dniAlu, rasAsig.get(filaSeleccionada).getId());
+				in.setVisible(true);
+			}
+		});
+		btnEvaluar.setBounds(56, 212, 89, 23);
+		contentPane.add(btnEvaluar);
 		llenarTabla(conn, rasAsig, dniAlu);
 	}
 	
@@ -85,5 +101,4 @@ public class EvaluacionAlumno extends JFrame {
 		}
 		
 	}
-
 }

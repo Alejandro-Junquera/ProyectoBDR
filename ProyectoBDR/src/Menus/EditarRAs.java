@@ -112,6 +112,7 @@ public class EditarRAs extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				InsertarRA IA = new InsertarRA(idAsig,nombreAsig,conn);
 				IA.setVisible(true);
+				dispose();
 			}
 		});
 		btnInsertar.setBounds(37, 227, 89, 23);
