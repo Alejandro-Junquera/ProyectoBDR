@@ -476,7 +476,6 @@ public class OperacionesBD {
 			ResultSet rs=statement.executeQuery();
 			while(rs.next()) {
 				res=rs.getFloat("nota");
-				System.out.println(res);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

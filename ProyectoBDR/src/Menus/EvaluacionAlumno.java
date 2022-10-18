@@ -28,7 +28,7 @@ public class EvaluacionAlumno extends JFrame {
 	private Object[] fila;
 
 	
-	public EvaluacionAlumno(Connection conn, String dniAlu, String dniProf,
+	public EvaluacionAlumno(Connection conn, String dniProf, String dniAlu,
 			String nombreAlu, String apellidosAlu, String nombreAsig, ArrayList<RA> rasAsig) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
