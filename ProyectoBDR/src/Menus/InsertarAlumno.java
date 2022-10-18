@@ -43,10 +43,8 @@ public class InsertarAlumno extends JFrame  {
 	private void componentes() {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
-
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNombre.setBounds(172, 122, 109, 25);
