@@ -55,12 +55,13 @@ public class InicioSesion extends JFrame {
 		contentPane.setLayout(null);
 		
 		textUsuario = new JTextField();
-		textUsuario.setBounds(189, 173, 253, 40);
+		textUsuario.setBounds(189, 221, 253, 40);
 		contentPane.add(textUsuario);
 		textUsuario.setColumns(10);
 		
 		textContrasenia = new JPasswordField();
-		textContrasenia.setBounds(189, 286, 253, 40);
+		textContrasenia.setBounds(189, 330, 253, 40);
+		textContrasenia.setEchoChar('\u25cf');
 		contentPane.add(textContrasenia);
 		textContrasenia.setColumns(10);
 		
@@ -106,7 +107,7 @@ public class InicioSesion extends JFrame {
 				Registro r=new Registro();
 			}
 		});
-		btnRegistro.setBounds(335, 350, 107, 21);
+		btnRegistro.setBounds(335, 387, 107, 21);
 		contentPane.add(btnRegistro);
 		
 		lblVer = new JLabel("");
@@ -118,7 +119,7 @@ public class InicioSesion extends JFrame {
 				textContrasenia.setEchoChar((char)0);
 			}
 		});
-		lblVer.setBounds(452, 291, 45, 34);
+		lblVer.setBounds(452, 336, 45, 34);
 		lblVer.setIcon(insertarImagenes.ResizableImage("Imagenes/Iconos/ver.png", lblVer));
 		contentPane.add(lblVer);
 		
@@ -128,35 +129,30 @@ public class InicioSesion extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				lblVer.setVisible(true);
 				lblOcultar.setVisible(false);
-				textContrasenia.setEchoChar('*');
+				textContrasenia.setEchoChar('\u25cf');
 			}
 		});
-		lblOcultar.setBounds(452, 291, 45, 34);
+		lblOcultar.setBounds(452, 336, 45, 34);
 		lblOcultar.setIcon(insertarImagenes.ResizableImage("Imagenes/Iconos/ocultar.png", lblOcultar));
 		contentPane.add(lblOcultar);
 		
 		JLabel lblimgDNI = new JLabel("");
-		lblimgDNI.setBounds(94, 173, 45, 34);
+		lblimgDNI.setBounds(94, 227, 45, 34);
 		lblimgDNI.setIcon(insertarImagenes.ResizableImage("Imagenes/Iconos/carnet-de-identidad.png", lblimgDNI));
 		contentPane.add(lblimgDNI);
 		
 		JLabel lblimgCont = new JLabel("");
-		lblimgCont.setBounds(94, 286, 45, 34);
+		lblimgCont.setBounds(94, 336, 45, 34);
 		lblimgCont.setIcon(insertarImagenes.ResizableImage("Imagenes/Iconos/bloquear.png", lblimgCont));
 		contentPane.add(lblimgCont);
-		
-		JLabel lblNewLabel = new JLabel("Iniciar Sesión");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 28));
-		lblNewLabel.setBounds(192, 53, 183, 51);
-		contentPane.add(lblNewLabel);
 		lblOcultar.setVisible(false);
 		
 		
-		/*JLabel lblFondo = new JLabel("");
+		JLabel lblFondo = new JLabel("");
 		lblFondo.setBounds(0, 0, 536, 613);
 		lblFondo.setIcon(new ImageIcon("Imagenes/Iconos/fondo.jpg"));
 		lblFondo.setIcon(new ImageIcon("Imagenes/Iconos/salesianos.jpg"));
-		contentPane.add(lblFondo);*/
+		contentPane.add(lblFondo);
 		setVisible(true);
 	}
 }
