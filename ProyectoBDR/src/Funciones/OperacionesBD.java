@@ -236,8 +236,8 @@ public class OperacionesBD {
 			statement2.setInt(2,idRA);
 			statement3.setInt(1,ponderacion);
 			statement3.setInt(1,idRA);
-			int rs=statement.executeUpdate();
-			int rs2=statement2.executeUpdate();
+			statement.executeUpdate();
+			statement2.executeUpdate();
 			statement.close();
 			statement2.close();
 			JOptionPane.showMessageDialog(null, "Se han actualizado la asignatura correctamente");
@@ -304,7 +304,7 @@ public class OperacionesBD {
             ps.setString(6, alum.getClave());
             ps.setString(7, alum.getImg());
             ps.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Se han insertado los datos");
+            JOptionPane.showMessageDialog(null, "Se ha añadido el alumno satisfactoriamente");
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
         }
@@ -364,7 +364,7 @@ public class OperacionesBD {
             ps.setString(2, ra.getDescripcion());
             ps.setInt(3, ra.getPonderacion());
             ps.setInt(4, ra.getId_asi());
-            int rs=ps.executeUpdate();
+            ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Se han insertado los datos");
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getMessage());
@@ -377,7 +377,7 @@ public class OperacionesBD {
 		try {
 			PreparedStatement statement = conn.prepareStatement(consulta);
 			statement.setString(1, dni);
-			int rs=statement.executeUpdate();
+			statement.executeUpdate();
 			JOptionPane.showMessageDialog(null, "Se han eliminado el alumno correctamente");
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getErrorCode());
@@ -394,7 +394,7 @@ public class OperacionesBD {
 		try {
 			PreparedStatement statement = conn.prepareStatement(consulta);
 			statement.setInt(1, idAsig);
-			int rs=statement.executeUpdate();
+			statement.executeUpdate();
 			JOptionPane.showMessageDialog(null, "Se han eliminado la asignatura correctamente");
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error de conexión:" + e.getErrorCode());
@@ -405,7 +405,7 @@ public class OperacionesBD {
 		try {
 			PreparedStatement statement=conn.prepareStatement(sql);
 			statement.setInt(1,idAsig);
-			int rs=statement.executeUpdate();
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -439,7 +439,7 @@ public class OperacionesBD {
 		try {
 			PreparedStatement statement=conn.prepareStatement(sql);
 			statement.setInt(1,idAsig);
-			int rs=statement.executeUpdate();
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

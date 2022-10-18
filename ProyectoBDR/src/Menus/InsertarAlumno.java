@@ -3,19 +3,16 @@ package Menus;
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import Conexiones.Conexion;
+import Funciones.insertarImagenes;
 import javax.swing.JLabel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.awt.event.ActionEvent;
  
 
@@ -29,8 +26,7 @@ public class InsertarAlumno extends JFrame  {
 	private JTextField textTelefono;
 	private JTextField textFecha;
 	private JLabel lblFoto;
-	private File ruta;
-	private Image img;
+	protected String relativaFoto;
 
 
 	public InsertarAlumno() {
@@ -84,7 +80,8 @@ public class InsertarAlumno extends JFrame  {
 		btnAniadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Conexion conn = new Conexion();
-				Funciones.OperacionesBD.insertarAlumno(textDNI.getText(), textNombre.getText(),textApellidos.getText(),textFecha.getText(),Integer.parseInt(textTelefono.getText()),textContrasenia.getText(),lblFoto.getText(),conn.conectarMySQL());
+				System.out.println(lblFoto.getText());
+				Funciones.OperacionesBD.insertarAlumno(textDNI.getText(), textNombre.getText(),textApellidos.getText(),textFecha.getText(),Integer.parseInt(textTelefono.getText()),textContrasenia.getText(),relativaFoto,conn.conectarMySQL());
 				dispose();
 				VistaAlumnos va= new VistaAlumnos();
 				va.setVisible(true);
@@ -113,7 +110,8 @@ public class InsertarAlumno extends JFrame  {
 		JButton btnAadirImagen = new JButton("Añadir Imagen");
 		btnAadirImagen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				elegirFoto();
+				insertarImagenes ii = new insertarImagenes();
+				relativaFoto=ii.generarRutaImg(relativaFoto, lblFoto);
 			}
 		});
 		btnAadirImagen.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -150,22 +148,6 @@ public class InsertarAlumno extends JFrame  {
 		textFecha.setBounds(314, 301, 253, 40);
 		contentPane.add(textFecha);
 		
-	}
-
-
-	protected void elegirFoto() {
-		JFileChooser carpeta = new JFileChooser();
-		carpeta.setDialogTitle("Seleccionar imagen");
-		File rutaCarpeta = new File("");
-		carpeta.setCurrentDirectory(rutaCarpeta);
-		int ventana= carpeta.showOpenDialog(carpeta);
-		if(ventana==JFileChooser.APPROVE_OPTION) {
-			ruta=carpeta.getSelectedFile();
-			lblFoto.setText(String.valueOf(ruta));
-			img=getToolkit().getImage(String.valueOf(lblFoto.getText()));
-			img=img.getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(),Image.SCALE_DEFAULT);
-			lblFoto.setIcon(new ImageIcon(img));
-		}
 	}
 
 }

@@ -31,6 +31,7 @@ public class ActualizarAlumno extends JFrame  {
 	private Image img;
 	private JButton btnActualizar,btnAadirImagen;
 	private JFileChooser carpeta;
+	private String relativaFoto;
 
 	public ActualizarAlumno() {
 		setTitle("Actualizar alumno");
@@ -54,6 +55,8 @@ public class ActualizarAlumno extends JFrame  {
 		textFecha.setText(fecha);
 		textTelefono.setText(String.valueOf(tel));
 		textContrasenia.setText(clave);
+		relativaFoto=imagen;
+		lblFoto.setText(imagen);
 		this.img=getToolkit().getImage(imagen);
 		this.img=this.img.getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(),Image.SCALE_DEFAULT);
 		lblFoto.setIcon(new ImageIcon(img));
@@ -102,7 +105,7 @@ public class ActualizarAlumno extends JFrame  {
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Conexion conn = new Conexion();
-				Funciones.OperacionesBD.actualizarAlumno(textDNI.getText(), textNombre.getText(),textApellidos.getText(),textFecha.getText(),Integer.parseInt(textTelefono.getText()),textContrasenia.getText(),lblFoto.getText(),conn.conectarMySQL());
+				Funciones.OperacionesBD.actualizarAlumno(textDNI.getText(), textNombre.getText(),textApellidos.getText(),textFecha.getText(),Integer.parseInt(textTelefono.getText()),textContrasenia.getText(),relativaFoto,conn.conectarMySQL());
 				dispose();
 				VistaAlumnos va= new VistaAlumnos();
 				va.setVisible(true);
@@ -130,11 +133,12 @@ public class ActualizarAlumno extends JFrame  {
 		
 		btnAadirImagen = new JButton("Añadir Imagen");
 		btnAadirImagen.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
-				//ruta=carpeta.getSelectedFile();
-				//lblFoto.setText(String.valueOf(ruta));
 				insertarImagenes ii = new insertarImagenes();
-				ii.generarRutaImg(lblFoto.getText(), lblFoto);
+				relativaFoto=ii.generarRutaImg(relativaFoto, lblFoto);
+				
+				
 			}
 		});
 		btnAadirImagen.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -171,22 +175,6 @@ public class ActualizarAlumno extends JFrame  {
 		textFecha.setBounds(314, 301, 253, 40);
 		contentPane.add(textFecha);
 		
-	}
-
-
-	protected void elegirFoto() {
-		carpeta = new JFileChooser();
-		carpeta.setDialogTitle("Seleccionar imagen");
-		File rutaCarpeta = new File("");
-		carpeta.setCurrentDirectory(rutaCarpeta);
-		int ventana= carpeta.showOpenDialog(carpeta);
-		if(ventana==JFileChooser.APPROVE_OPTION) {
-			ruta=carpeta.getSelectedFile();
-			lblFoto.setText(String.valueOf(ruta));
-			img=getToolkit().getImage(String.valueOf(lblFoto.getText()));
-			img=img.getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(),Image.SCALE_DEFAULT);
-			lblFoto.setIcon(new ImageIcon(img));
-		}
 	}
 
 }

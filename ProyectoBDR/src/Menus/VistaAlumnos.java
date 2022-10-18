@@ -10,6 +10,7 @@ import Funciones.OperacionesBD;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -19,6 +20,10 @@ import java.awt.Toolkit;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
@@ -157,10 +162,24 @@ public class VistaAlumnos extends JFrame {
 		btnEliminarAlumno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Conexion conn = new Conexion();
-				OperacionesBD.borrarDNIProfAsignatura(alumnos.get(filaSeleccionada).getDNI(), conn.conectarMySQL());
+				int op=JOptionPane.showConfirmDialog(null, "¿Seguro que deseas eliminar el alumno seleccionado?");
+				if(op==0) {
+				limpiarFoto();
+				File eliminar=new File(alumnos.get(filaSeleccionada).getImg());
 				OperacionesBD.BorrarAlumno(alumnos.get(filaSeleccionada).getDNI(), conn.conectarMySQL());
 				alumnos=OperacionesBD.ExtraccionTablaAlumno(conn.conectarMySQL());
+				try {
+					if(!alumnos.get(filaSeleccionada).getImg().equals("\\Imagenes\\Fotos\\defecto.png")) {
+						Files.delete(Paths.get(eliminar.getPath()));
+					}
+					
+				} catch (IOException e1) {
+					
+				}catch(java.lang.IndexOutOfBoundsException e2) {
+					
+				}
 				llenarTabla();
+				}
 			}
 		});
 		btnEliminarAlumno.setBounds(404, 422, 121, 40);
@@ -177,5 +196,10 @@ public class VistaAlumnos extends JFrame {
 		lblFotoAlumno = new JLabel("");
 		lblFotoAlumno.setBounds(289, 278, 128, 119);
 		panel.add(lblFotoAlumno);
+	}
+	void limpiarFoto() {
+		lblFotoAlumno.setText("");
+		lblFotoAlumno.setIcon(null);
+		tablaAlumnos.clearSelection();
 	}
 }
