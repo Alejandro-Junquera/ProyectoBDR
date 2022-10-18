@@ -322,6 +322,7 @@ public class OperacionesBD {
 			statement.setString(5,contrasenia);
 			statement.setString(6,img);
 			statement.setString(7,dni);
+			statement.executeUpdate();
 			statement.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
