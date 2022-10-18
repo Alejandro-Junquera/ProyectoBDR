@@ -10,28 +10,27 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import Conexiones.Conexion;
+import Funciones.insertarImagenes;
+
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.Connection;
 import java.awt.event.ActionEvent;
  
 
 public class ActualizarAlumno extends JFrame  {
 
 	private JPanel contentPane;
-	private JTextField textNombre;
-	private JTextField textContrasenia;
-	private JTextField textDNI;
-	private JTextField textApellidos;
-	private JTextField textTelefono;
-	private JTextField textFecha;
-	private JLabel lblFoto;
+	private JTextField textNombre,textContrasenia,textDNI,textApellidos,textTelefono,textFecha;
+	private JLabel lblFoto,lblFechaNacimiento,lblTelefono,lblApellidos,lblDNI,lblContrasenia,lblNombre;
 	private File ruta;
 	private Image img;
-
+	private JButton btnActualizar,btnAadirImagen;
+	private JFileChooser carpeta;
 
 	public ActualizarAlumno() {
 		setTitle("Actualizar alumno");
@@ -41,7 +40,25 @@ public class ActualizarAlumno extends JFrame  {
 		this.setLocation((pantallaTamano.width/2)-(this.getWidth()/2), (pantallaTamano.height/2)-(this.getHeight()/2));
 		componentes();
 	}
+	
+	public ActualizarAlumno(String dni, String nombre, String apellidos, String fecha,int tel ,String clave,String imagen, Connection conn) {
+		setTitle("Actualizar alumno");
+		setBounds(100, 100, 1080, 561);
+		contentPane = new JPanel();
+		Dimension pantallaTamano = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation((pantallaTamano.width/2)-(this.getWidth()/2), (pantallaTamano.height/2)-(this.getHeight()/2));
+		componentes();
+		textDNI.setText(dni);
+		textNombre.setText(nombre);
+		textApellidos.setText(apellidos);
+		textFecha.setText(fecha);
+		textTelefono.setText(String.valueOf(tel));
+		textContrasenia.setText(clave);
+		this.img=getToolkit().getImage(imagen);
+		this.img=this.img.getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(),Image.SCALE_DEFAULT);
+		lblFoto.setIcon(new ImageIcon(img));
 
+	}
 
 	private void componentes() {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -49,12 +66,12 @@ public class ActualizarAlumno extends JFrame  {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre = new JLabel("Nombre");
 		lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNombre.setBounds(172, 122, 109, 25);
 		contentPane.add(lblNombre);
 		
-		JLabel lblContrasenia = new JLabel("Contraseña");
+		lblContrasenia = new JLabel("Contraseña");
 		lblContrasenia.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblContrasenia.setBounds(172, 379, 109, 25);
 		contentPane.add(lblContrasenia);
@@ -69,7 +86,7 @@ public class ActualizarAlumno extends JFrame  {
 		contentPane.add(textContrasenia);
 		textContrasenia.setColumns(10);
 		
-		JLabel lblDNI = new JLabel("DNI");
+		lblDNI = new JLabel("DNI");
 		lblDNI.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblDNI.setBounds(172, 57, 34, 25);
 		contentPane.add(lblDNI);
@@ -81,19 +98,19 @@ public class ActualizarAlumno extends JFrame  {
 		contentPane.add(textDNI);
 		
 		
-		JButton btnAniadir = new JButton("Añadir");
-		btnAniadir.addActionListener(new ActionListener() {
+		btnActualizar = new JButton("Actualizar");
+		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Conexion conn = new Conexion();
-				Funciones.OperacionesBD.insertarAlumno(textDNI.getText(), textNombre.getText(),textApellidos.getText(),textFecha.getText(),Integer.parseInt(textTelefono.getText()),textContrasenia.getText(),lblFoto.getText(),conn.conectarMySQL());
+				Funciones.OperacionesBD.actualizarAlumno(textDNI.getText(), textNombre.getText(),textApellidos.getText(),textFecha.getText(),Integer.parseInt(textTelefono.getText()),textContrasenia.getText(),lblFoto.getText(),conn.conectarMySQL());
 				dispose();
 				VistaAlumnos va= new VistaAlumnos();
 				va.setVisible(true);
 			}
 		});
-		btnAniadir.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnAniadir.setBounds(206, 456, 180, 40);
-		contentPane.add(btnAniadir);
+		btnActualizar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnActualizar.setBounds(206, 456, 180, 40);
+		contentPane.add(btnActualizar);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
@@ -111,17 +128,20 @@ public class ActualizarAlumno extends JFrame  {
 		lblFoto.setBounds(691, 93, 152, 190);
 		contentPane.add(lblFoto);
 		
-		JButton btnAadirImagen = new JButton("Añadir Imagen");
+		btnAadirImagen = new JButton("Añadir Imagen");
 		btnAadirImagen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				elegirFoto();
+				//ruta=carpeta.getSelectedFile();
+				//lblFoto.setText(String.valueOf(ruta));
+				insertarImagenes ii = new insertarImagenes();
+				ii.generarRutaImg(lblFoto.getText(), lblFoto);
 			}
 		});
 		btnAadirImagen.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAadirImagen.setBounds(691, 301, 152, 40);
 		contentPane.add(btnAadirImagen);
 		
-		JLabel lblApellidos = new JLabel("Apellidos");
+		lblApellidos = new JLabel("Apellidos");
 		lblApellidos.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblApellidos.setBounds(172, 187, 109, 25);
 		contentPane.add(lblApellidos);
@@ -131,7 +151,7 @@ public class ActualizarAlumno extends JFrame  {
 		textApellidos.setBounds(314, 172, 253, 40);
 		contentPane.add(textApellidos);
 		
-		JLabel lblTelefono = new JLabel("Telefono");
+		lblTelefono = new JLabel("Telefono");
 		lblTelefono.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblTelefono.setBounds(172, 251, 109, 25);
 		contentPane.add(lblTelefono);
@@ -141,7 +161,7 @@ public class ActualizarAlumno extends JFrame  {
 		textTelefono.setBounds(314, 236, 253, 40);
 		contentPane.add(textTelefono);
 		
-		JLabel lblFechaNacimiento = new JLabel("Fecha Nacimiento");
+		lblFechaNacimiento = new JLabel("Fecha Nacimiento");
 		lblFechaNacimiento.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblFechaNacimiento.setBounds(172, 316, 132, 25);
 		contentPane.add(lblFechaNacimiento);
@@ -155,7 +175,7 @@ public class ActualizarAlumno extends JFrame  {
 
 
 	protected void elegirFoto() {
-		JFileChooser carpeta = new JFileChooser();
+		carpeta = new JFileChooser();
 		carpeta.setDialogTitle("Seleccionar imagen");
 		File rutaCarpeta = new File("");
 		carpeta.setCurrentDirectory(rutaCarpeta);

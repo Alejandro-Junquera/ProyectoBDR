@@ -3,6 +3,7 @@ package Funciones;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,7 +37,11 @@ public class insertarImagenes {
 			
 			try {
 				Files.copy(Paths.get(selectedFile.getAbsolutePath()), Paths.get(Rutarelativa.getPath()));
-			} catch (IOException e) {
+			}catch (FileAlreadyExistsException f1) {
+				// TODO Auto-generated catch block
+				f1.getMessage();
+			} 
+			catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

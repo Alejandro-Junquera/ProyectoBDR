@@ -25,22 +25,16 @@ import javax.swing.JScrollPane;
 
 public class VistaAlumnos extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private JPanel contentPane,panel;
 	private JTable tablaAlumnos;
 	private DefaultTableModel model;
-	private JPanel panel;
-	private JButton btnVolverAdmin;
-	private JLabel lblTitulo;
+	private JButton btnVolverAdmin,btnInsertarAlumno,btnActualizarAlumno,btnEliminarAlumno,btnMostrarNotas;
+	private JLabel lblTitulo,lblFotoAlumno;
 	private Object[] fila;
 	private ArrayList<Alumno> alumnos= new ArrayList<Alumno>();
-	private JButton btnInsertarAlumno;
-	private JButton btnActualizarAlumno;
-	private JButton btnEliminarAlumno;
-	private JButton btnMostrarNotas;
 	private JScrollPane scrollPane;
-	protected int filaSeleccionada;
+	private int filaSeleccionada;
 	private Image img;
-	private JLabel lblFotoAlumno;
 	
 	
 	public VistaAlumnos() {
@@ -151,7 +145,8 @@ public class VistaAlumnos extends JFrame {
 		btnActualizarAlumno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				ActualizarAlumno aa = new ActualizarAlumno();
+				Conexion conn = new Conexion();
+				ActualizarAlumno aa=new ActualizarAlumno(alumnos.get(filaSeleccionada).getDNI(),alumnos.get(filaSeleccionada).getNombre(),alumnos.get(filaSeleccionada).getApellidos(),alumnos.get(filaSeleccionada).getFechaNac(),alumnos.get(filaSeleccionada).getTlf(),alumnos.get(filaSeleccionada).getClave(),alumnos.get(filaSeleccionada).getImg(),conn.conectarMySQL());
 				aa.setVisible(true);
 			}
 		});

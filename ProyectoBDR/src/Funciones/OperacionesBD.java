@@ -311,6 +311,25 @@ public class OperacionesBD {
 		return alum;
     }
 	
+	public static void actualizarAlumno(String dni,String nombre,String apellidos,String fecha,int telefono,String contrasenia,String img,Connection conn) {
+		String sql="update alumno set nombre=?,apellidos=?,fecha_nacimiento=?,telefono=?,clave=?,img=? where dni=?";
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			statement.setString(1,nombre);
+			statement.setString(2,apellidos);
+			statement.setString(3,fecha);
+			statement.setInt(4,telefono);
+			statement.setString(5,contrasenia);
+			statement.setString(6,img);
+			statement.setString(7,dni);
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public static void insertarAsignatura(String nombre,String horasSemanales,Connection conn){
         PreparedStatement ps;
         String sql;
