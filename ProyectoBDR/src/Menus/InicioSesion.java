@@ -109,6 +109,7 @@ public class InicioSesion extends JFrame {
 		btnRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Registro r=new Registro();
+				r.setVisible(true);
 			}
 		});
 		btnRegistro.setBounds(335, 387, 107, 21);
