@@ -162,7 +162,7 @@ public class InsertarAlumno extends JFrame  {
 		lblFechaNacimiento.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(lblFechaNacimiento);
 		
-		textFecha = new JTextField("1981-01-01");
+		textFecha = new JTextField("");
 		textFecha.setColumns(10);
 		textFecha.setBounds(523, 311, 146, 40);
 		textFecha.setEditable(false);
