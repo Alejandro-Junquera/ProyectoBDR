@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import Conexiones.Conexion;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -20,6 +21,7 @@ import Funciones.ComprobarUsuario;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import Funciones.insertarImagenes;
+import Funciones.JFrameDiseño;
 
 public class InicioSesion extends JFrame {
 
@@ -47,9 +49,11 @@ public class InicioSesion extends JFrame {
 		conn=connbd.conectarMySQL();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 650);
+		setTitle("Iniciar sesión");
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
+		setIconImage(JFrameDiseño.logo.getImage());
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -83,7 +87,7 @@ public class InicioSesion extends JFrame {
 					p.setVisible(true);
 					setVisible(false);
 				}else {
-					System.out.println("Usuario o contraseña erroneo");
+					JOptionPane.showMessageDialog(null, "Usuario o contraseña erroneo");
 				}
 			}
 		});

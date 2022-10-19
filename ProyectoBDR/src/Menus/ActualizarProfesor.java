@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -22,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Funciones.Asignatura;
+import Funciones.JFrameDiseño;
 import Funciones.OperacionesBD;
 import Funciones.insertarImagenes;
 
@@ -87,6 +89,7 @@ public class ActualizarProfesor extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		contentPane.setBackground(JFrameDiseño.fondoAdmin);
 
 		JLabel lblImg = new JLabel("Insertar Imagen");
 		lblImg.setBounds(659, 38, 232, 210);
@@ -177,6 +180,8 @@ public class ActualizarProfesor extends JFrame {
 			}
 		});
 		btnActualizar.setBounds(258, 663, 121, 40);
+		btnActualizar.setBackground(JFrameDiseño.boton);
+		btnActualizar.setBackground(JFrameDiseño.boton);
 		contentPane.add(btnActualizar);
 
 		JButton btnVolver = new JButton("Volver");
@@ -187,6 +192,7 @@ public class ActualizarProfesor extends JFrame {
 			}
 		});
 		btnVolver.setBounds(600, 663, 121, 40);
+		btnVolver.setBackground(JFrameDiseño.boton);
 		contentPane.add(btnVolver);
 		textDNI.setText(dni);
 		textNombre.setText(nombre);
@@ -239,6 +245,7 @@ public class ActualizarProfesor extends JFrame {
 		});
 		Aplicar.setToolTipText("");
 		Aplicar.setBounds(520, 562, 85, 21);
+		Aplicar.setBackground(JFrameDiseño.boton);
 		contentPane.add(Aplicar);
 
 		Aplicar2 = new JButton("Aplicar");
@@ -257,6 +264,7 @@ public class ActualizarProfesor extends JFrame {
 		contentPane.add(Aplicar2);
 		desactivarBoton(asignaturasPropias, Aplicar);
 		desactivarBoton(asignaturasLibres, Aplicar2);
+		Aplicar2.setBackground(JFrameDiseño.boton);
 		setVisible(true);
 	}
 }

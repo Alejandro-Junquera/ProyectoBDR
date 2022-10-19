@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Funciones.JFrameDiseño;
 import Funciones.insertarImagenes;
 
 import javax.swing.JButton;
@@ -24,8 +25,10 @@ public class AdminSeleccion extends JFrame {
 	public AdminSeleccion(Connection conn) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 560, 300);
+		setTitle("Panel de administrador");
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setIconImage(JFrameDiseño.logo.getImage());
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);

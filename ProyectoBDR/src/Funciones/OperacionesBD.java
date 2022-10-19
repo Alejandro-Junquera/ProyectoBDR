@@ -517,4 +517,22 @@ public class OperacionesBD {
 		}
 		return p;
 	}
+	public static boolean existeProf(Connection conn,String dni) {
+		String sql="select * from profesor where dni=?;";
+		try {
+			PreparedStatement statement=conn.prepareStatement(sql);
+			statement.setString(1,dni);
+			ResultSet rs=statement.executeQuery();
+			if(rs.next()) {
+				return true;
+			}else {
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+		
+	}
 }

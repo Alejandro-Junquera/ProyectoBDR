@@ -14,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import Funciones.Profesor;
+import Funciones.JFrameDiseño;
 import Funciones.Asignatura;
 import Funciones.OperacionesBD;
 import java.awt.event.ActionListener;
@@ -31,7 +32,7 @@ public class AdminProfesor extends JFrame {
 	private static  ArrayList<Profesor> profesores=new ArrayList<>();
 	private int filaSelecionada;
 	private ArrayList<Asignatura> asignaturas;
-	private JButton btnInsertar;
+	private JButton btnInsertar,btnActualizar,btnEliminar,btnMostrar;
 
 	public static void actualizarGrafico() {
 		tablemodel.setRowCount(0);
@@ -57,6 +58,17 @@ public class AdminProfesor extends JFrame {
 			btnInsertar.setEnabled(true);
 		}
 	}
+	public void hayProfesor() {
+		if(profesores.isEmpty()) {
+			btnActualizar.setEnabled(false);
+			btnEliminar.setEnabled(false);
+			btnMostrar.setEnabled(false);
+		}else {
+			btnActualizar.setEnabled(true);
+			btnEliminar.setEnabled(true);
+			btnMostrar.setEnabled(true);
+		}
+	}
 	public AdminProfesor(Connection conn) {
 		profesores=OperacionesBD.ExtraccionTablaProfesor(conn);
 		asignaturas=OperacionesBD.ExtraccionAsignaturas(conn);
@@ -65,9 +77,11 @@ public class AdminProfesor extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
+		
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		contentPane.setBackground(JFrameDiseño.fondoAdmin);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(38, 48, 862, 387);
@@ -94,11 +108,12 @@ public class AdminProfesor extends JFrame {
 			}
 		});
 		btnInsertar.setBounds(69, 547, 121, 40);
+		btnInsertar.setBackground(JFrameDiseño.boton);
 		contentPane.add(btnInsertar);
 		hayAsignatura();
 		
 		
-		JButton btnActualizar = new JButton("Actualizar");
+		btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ActualizarProfesor ac=new ActualizarProfesor(profesores.get(filaSelecionada).getDNI(),profesores.get(filaSelecionada).getNombre(),profesores.get(filaSelecionada).getApellidos(),profesores.get(filaSelecionada).getEmail(),profesores.get(filaSelecionada).getClave(),profesores.get(filaSelecionada).getImg(),"Asignatura",conn);
@@ -106,9 +121,10 @@ public class AdminProfesor extends JFrame {
 			}
 		});
 		btnActualizar.setBounds(231, 547, 121, 40);
+		btnActualizar.setBackground(JFrameDiseño.boton);
 		contentPane.add(btnActualizar);
 		
-		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int op=JOptionPane.showConfirmDialog(null, "¿Seguro que deseas eliminar al profesor?");
@@ -117,8 +133,9 @@ public class AdminProfesor extends JFrame {
 				OperacionesBD.borrarDNIProfAsignatura(profesores.get(filaSelecionada).getDNI(), conn);
 				OperacionesBD.borrarProfesor(profesores.get(filaSelecionada).getDNI(), conn);
 				profesores=OperacionesBD.ExtraccionTablaProfesor(conn);
+				hayProfesor();
 				try {
-					if(!profesores.get(filaSelecionada).getImg().equals("\\Imagenes\\Fotos\\defecto.png")) {
+					if(!profesores.get(filaSelecionada).getImg().equals("\\Imagenes\\Fotos\\defecto.jfif")) {
 						Files.delete(Paths.get(eliminar.getPath()));
 					}
 					
@@ -133,10 +150,18 @@ public class AdminProfesor extends JFrame {
 			}
 		});
 		btnEliminar.setBounds(400, 547, 121, 40);
+		btnEliminar.setBackground(JFrameDiseño.boton);
 		contentPane.add(btnEliminar);
 		
-		JButton btnMostrar = new JButton("Mostrar");
+		btnMostrar = new JButton("Mostrar");
+		btnMostrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VisualizarProfesor vp=new VisualizarProfesor(profesores.get(filaSelecionada).getDNI(),profesores.get(filaSelecionada).getNombre(),profesores.get(filaSelecionada).getApellidos(),profesores.get(filaSelecionada).getEmail(),profesores.get(filaSelecionada).getClave(),profesores.get(filaSelecionada).getImg(),"Asignatura",conn);
+				dispose();
+			}
+		});
 		btnMostrar.setBounds(567, 547, 121, 40);
+		btnMostrar.setBackground(JFrameDiseño.boton);
 		contentPane.add(btnMostrar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -147,10 +172,12 @@ public class AdminProfesor extends JFrame {
 			}
 		});
 		btnVolver.setBounds(736, 547, 121, 40);
+		btnVolver.setBackground(JFrameDiseño.boton);
 		contentPane.add(btnVolver);
 		setVisible(true);
+		hayProfesor();
 		if(asignaturas.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "No se puede insertar profesor, no hay asignaturas libres");
+			JOptionPane.showMessageDialog(null, "No se pueden insertar más profesores, no hay asignaturas libres");
 		}
 	}
 }
