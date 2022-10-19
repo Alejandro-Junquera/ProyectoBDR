@@ -10,12 +10,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import Conexiones.Conexion;
+import Funciones.Alumno;
+import Funciones.OperacionesBD;
 import Funciones.insertarImagenes;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeListener;
@@ -34,11 +37,15 @@ public class InsertarAlumno extends JFrame  {
 	protected insertarImagenes ii= new insertarImagenes();
 	private JCalendar fecha;
 	private JTextField textFecha;
+	protected boolean existe;
+	private ArrayList<Alumno> alumnos= new ArrayList<Alumno>();
 
 
 
 
 	public InsertarAlumno() {
+		Conexion conn = new Conexion();
+		this.alumnos=OperacionesBD.ExtraccionTablaAlumno(conn.conectarMySQL());
 		setTitle("Insertar alumno");
 		setBounds(100, 100, 1080, 561);
 		contentPane = new JPanel();
@@ -87,21 +94,34 @@ public class InsertarAlumno extends JFrame  {
 		btnAniadir.setBounds(206, 456, 180, 40);
 		btnAniadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Conexion conn = new Conexion();
-				if(combrobarCamposVacios(textDNI, textNombre, textApellidos, textFecha, textTelefono,textContrasenia)) {
-					try {
-						Funciones.OperacionesBD.insertarAlumno(textDNI.getText(), textNombre.getText(),textApellidos.getText(),textFecha.getText(),Integer.parseInt(textTelefono.getText()),textContrasenia.getText(),lblFoto.getText(),conn.conectarMySQL());
-						dispose();
-						VistaAlumnos va= new VistaAlumnos();
-						va.setVisible(true);
-					}catch(NumberFormatException nfe1) {
-						JOptionPane.showMessageDialog(null, "El campo teléfono solo puede contener números");
+				existe=false;
+				for(Alumno alum:alumnos) {
+					if(alum.getDNI().equals(textDNI.getText())) {
+						existe=true;
+						break;
 					}
-					
+				}
+				Conexion conn = new Conexion();
+				if(!existe) {
+					if(combrobarCamposVacios(textDNI, textNombre, textApellidos, textFecha, textTelefono,textContrasenia)) {
+						try {
+							Funciones.OperacionesBD.insertarAlumno(textDNI.getText(), textNombre.getText(),textApellidos.getText(),textFecha.getText(),Integer.parseInt(textTelefono.getText()),textContrasenia.getText(),lblFoto.getText(),conn.conectarMySQL());
+							dispose();
+							VistaAlumnos va= new VistaAlumnos();
+							va.setVisible(true);
+						}catch(NumberFormatException nfe1) {
+							JOptionPane.showMessageDialog(null, "El campo teléfono solo puede contener números");
+						}
+						
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "No puede haber campos vacios");
+					}
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "No puede haber campos vacios");
+					JOptionPane.showMessageDialog(null, "Ya existe un usuario con ese Dni");
 				}
+				
 				
 			}
 		});
