@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="ProyectoBDR/src"/>
-	<classpathentry kind="lib" path="ProyectoBDR/Libreria/mysql-connector-java-8.0.29.jar"/>
-	<classpathentry kind="output" path="ProyectoBDR/bin"/>
-</classpath>
